@@ -88,7 +88,7 @@ return function (App $app) {
         $group->post('/actualizar', derivadosManzanaController::class . ':validarActualizarDeribadoManzana');
         //ruta para eliminar producto derivado de manzana
         $group->post('/eliminar', derivadosManzanaController::class . ':validarEliminarDerivadoManzana');
-    });
+    }); 
 
 
     // Grupo para manzanas
