@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Actividad\actividadController;
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -54,11 +55,40 @@ return function (App $app) {
         return $response;
     });
 
-    //get para mostrar la pagina de login y post para hacer la petición a la BD
-    $app->get('/login', loginController::class . ':login');
+
     $app->post('/login', loginController::class . ':validarLogin');
     $app->post('/registrarUsuario', loginController::class . ':validarCrearUsario');
 
+
+
+    //Grupo para Actividades
+    $app->group('/actividad', function (Group $group) {
+        //ruta para ingresar una actividad
+        $group->post('/registrar', actividadController::class . ':validarIngresarActividad');
+        //ruta para listar las actividades
+        $group->post('/lista', actividadController::class . ':validarListaActividades');
+        //ruta para buscar una actividad por id
+        $group->post('/buscar', actividadController::class . ':validarBuscarActividadId');
+        //ruta para actualizar una actividad
+        $group->post('/actualizar', actividadController::class . ':validarActualizarActividad');
+        //ruta para eliminar actividad
+        $group->post('/eliminar', actividadController::class . ':validarEliminarActividad');
+    });
+
+
+    //Grupo para productos derivados manzana
+    $app->group('/derivadosManzana', function (Group $group) {
+        //ruta para ingresar un producto derivado de manzana
+        $group->post('/registrar', derivadosManzanaController::class . ':validarIngresarDerivadoManzana');
+        //ruta para listar los productos derivados de manzana
+        $group->post('/lista', derivadosManzanaController::class . ':validarListaDerivadosManzana');
+        //ruta para buscar un producto derivado de manzana
+        $group->post('/buscar', derivadosManzanaController::class . ':validarBuscarDerivadoManzanaPorId');
+        //ruta para actualizar un producto derivado de manzana
+        $group->post('/actualizar', derivadosManzanaController::class . ':validarActualizarDeribadoManzana');
+        //ruta para eliminar producto derivado de manzana
+        $group->post('/eliminar', derivadosManzanaController::class . ':validarEliminarDerivadoManzana');
+    });
 
 
     // Grupo para manzanas
@@ -82,6 +112,8 @@ return function (App $app) {
         $group->post('/eliminar', puntoVentaController::class . ':validarEliminarPuntoVenta');
     });
 
+
+    
 
 
 };
