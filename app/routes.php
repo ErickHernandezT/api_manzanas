@@ -56,7 +56,9 @@ return function (App $app) {
     });
 
 
+    //ruta para loguearse
     $app->post('/login', loginController::class . ':validarLogin');
+    //ruta para registrarun usuario
     $app->post('/registrarUsuario', loginController::class . ':validarCrearUsario');
 
 
@@ -91,24 +93,51 @@ return function (App $app) {
     }); 
 
 
+
+     //Grupo para Eventos
+     $app->group('/Eventos', function (Group $group) {
+        //ruta para ingresar un evento
+        $group->post('/registrar', eventoController::class . ':validarIngresarEvento');
+        //ruta para listar los eventos
+        $group->post('/lista', eventoController::class . ':validarListaEventos');
+        //ruta para buscar un evento
+        $group->post('/buscar', eventoController::class . ':validarBuscarEventoId');
+        //ruta para actualizar un evento
+        $group->post('/actualizar', eventoController::class . ':validarActualizarEvento');
+        //ruta para eliminar un evento
+        $group->post('/eliminar', eventoController::class . ':validarEliminarEvento');
+    });
+
+
+
+
+
     // Grupo para manzanas
     $app->group('/Manzana', function (Group $group) {
         //ruta para ingresar una manzana
         $group->post('/registrar', manzanaController::class . ':validarIngresarManzanas');
+        //ruta para listar las manzanas
         $group->post('/lista', manzanaController::class . ':validarListaManzanas');
+        //ruta para buscar una manzana
         $group->post('/buscar', manzanaController::class . ':validarBuscarManzanaPorId');
+        //ruta para actualizar una manzana
         $group->post('/actualizar', manzanaController::class . ':validarActualizarManzanas');
+        //ruta para eliminar una manzana
         $group->post('/eliminar', manzanaController::class . ':validarEliminarManzana');
     });
 
 
     //Grupo para puntos de venta
     $app->group('/puntoVenta', function (Group $group) {
-        //ruta para ingresar una manzana
+        //ruta para ingresar un punto de venta
         $group->post('/registrar', puntoVentaController::class . ':validarIngresarPuntoVenta');
+        //ruta para listar los puntos de venta
         $group->post('/lista', puntoVentaController::class . ':validarListaPuntosVenta');
+        //ruta para buscar un punto de venta
         $group->post('/buscar', puntoVentaController::class . ':validarBuscarPuntoVentaPorId');
+        //ruta para actualizar un punto de venta
         $group->post('/actualizar', puntoVentaController::class . ':validarActualizarPuntoVenta');
+        //ruta para eliminar un punto de venta
         $group->post('/eliminar', puntoVentaController::class . ':validarEliminarPuntoVenta');
     });
 

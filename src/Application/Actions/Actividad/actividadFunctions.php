@@ -100,7 +100,7 @@ class actividadFunctions
         $statement = $this->DB->Ejecutar_Seguro_UTF8($sql, [$id]);
 
         // Verificamos si la eliminación fue exitosa (código 200)
-        return ($statement == '200') ? true : false;;
+        return ($statement == '200') ? true : false;
     }
 
 }
