@@ -67,7 +67,7 @@ class derivadosManzanaController extends generalController
                 $code = 200;
             } else {
                 $code = 404;
-                $mensaje = ['message' => 'Actividades no encontradas'];
+                $mensaje = ['message' => 'Productos derivados de manzana no encontrados'];
             }
        
 
@@ -90,7 +90,7 @@ class derivadosManzanaController extends generalController
 
         $mensaje = ['message' => ''];
 
-        if ($nombre > 0 && $nombre != '' && $descripcion != '' ) {
+        if ($id > 0 && $nombre != '' && $descripcion != '' ) {
             // Verifica que la foto se haya cargado correctamente
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 // El archivo se cargó correctamente

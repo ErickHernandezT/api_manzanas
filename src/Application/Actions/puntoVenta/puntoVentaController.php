@@ -32,7 +32,7 @@ class puntoVentaController extends generalController
 
         $mensaje = ['message' => ''];
 
-        if ($nombre != '' && $latitud != '' && $longitud != '' && $estatus != '' && $horario != '' ) {
+        if ($nombre != '' && $latitud != '' && $longitud != '' && $estatus > 0 && $horario != '' ) {
             // Verifica que la foto se haya cargado correctamente
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 // El archivo se cargó correctamente
@@ -70,7 +70,7 @@ class puntoVentaController extends generalController
                 $code = 200;
             } else {
                 $code = 404;
-                $mensaje = ['message' => 'Error al cargar punto de venta'];
+                $mensaje = ['message' => 'Error al cargar los puntos de venta'];
             }
        
 
@@ -96,7 +96,7 @@ class puntoVentaController extends generalController
 
         $mensaje = ['message' => ''];
 
-        if ($id != '' && $nombre != '' && $latitud != '' && $longitud != '' && $estatus != '' && $horario != '') {
+        if ($id > 0 && $nombre != '' && $latitud != '' && $longitud != '' && $estatus > 0 && $horario != '') {
             // Verifica que la foto se haya cargado correctamente
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 // El archivo se cargó correctamente

@@ -80,7 +80,7 @@ class actividadFunctions
         $sql = "UPDATE actividad SET nombre = ?, foto = ?, descripcion = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
-        $parametros = [$nombre, $blobData, $descripcion];
+        $parametros = [$nombre, $blobData, $descripcion, $id];
 
         // Ejecutamos la consulta
         $statement = $this->DB->Ejecutar_Seguro_UTF8($sql, $parametros);

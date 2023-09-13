@@ -90,7 +90,7 @@ class actividadController extends generalController
 
         $mensaje = ['message' => ''];
 
-        if ($nombre > 0 && $nombre != '' && $descripcion != '' ) {
+        if ($id > 0 && $nombre != '' && $descripcion != '' ) {
             // Verifica que la foto se haya cargado correctamente
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 // El archivo se cargó correctamente

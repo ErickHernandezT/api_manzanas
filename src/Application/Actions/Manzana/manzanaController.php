@@ -31,7 +31,7 @@ class manzanaController extends generalController
 
         $mensaje = ['message' => ''];
 
-        if ($nombre != '' && $nivelMadurez != '' && $descripcion != '' && $estatus != '' && $precio != '' && $stock != '' && $descripcion != '') {
+        if ($nombre != '' && $nivelMadurez != '' && $descripcion != '' && $estatus > 0 && $precio > 0 && $stock > 0 && $descripcion != '') {
             // Verifica que la foto se haya cargado correctamente
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 // El archivo se cargó correctamente
@@ -96,7 +96,7 @@ class manzanaController extends generalController
 
         $mensaje = ['message' => ''];
 
-        if ($id != '' && $nombre != '' && $nivelMadurez != '' && $descripcion != '' && $estatus != '' && $precio != '' && $stock != '' && $descripcion != '') {
+        if ($id > 0 && $nombre != '' && $nivelMadurez != '' && $descripcion != '' && $estatus > 0 && $precio > 0 && $stock > 0 && $descripcion != '') {
             // Verifica que la foto se haya cargado correctamente
             if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                 // El archivo se cargó correctamente
