@@ -66,7 +66,7 @@ class loginController extends generalController
         }
 
         // Retornamos la respuesta
-        return $this->response($code, [$mensaje], $response);
+        return $this->response($code, $mensaje, $response);
     }
 
 
