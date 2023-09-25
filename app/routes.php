@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Application\Actions\Actividad\actividadController;
+use App\Application\Actions\Carrito\carritoController;
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -77,6 +78,14 @@ return function (App $app) {
         $group->post('/actualizar', actividadController::class . ':validarActualizarActividad');
         //ruta para eliminar actividad
         $group->post('/eliminar', actividadController::class . ':validarEliminarActividad');
+    });
+
+
+
+    //Grupo para Carrito
+    $app->group('/carrito', function (Group $group) {
+        //ruta para agregar productos al carrito
+        $group->post('/agregarCarrito', carritoController::class . ':validarAgregarCarrito');
     });
 
 
