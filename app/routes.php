@@ -60,6 +60,8 @@ return function (App $app) {
     $app->post('/login', loginController::class . ':validarLogin');
     //ruta para registrarun usuario
     $app->post('/registrarUsuario', loginController::class . ':validarCrearUsario');
+    //ruta para registrarun productor
+    $app->post('/registrarProductor', loginController::class . ':validarCrearProductor');
 
 
 

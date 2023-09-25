@@ -114,4 +114,39 @@ class loginController extends generalController
 
         return $this->response($code, [$respuesta], $response);
     }
+
+
+
+    public function validarCrearProductor($request, $response, $args)
+    {
+
+        //se validan los datos para crear un usuario.
+        $params    = (array)$request->getParsedBody();
+        $nombre   = (isset($params['nombre']))   ? strip_tags($params['nombre'])   : '';
+        $apellidoPat   = (isset($params['apellidoPat']))   ? strip_tags($params['apellidoPat'])   : '';
+        $apellidoMat  = (isset($params['apellidoMat']))   ? strip_tags($params['apellidoMat'])   : '';
+        $correo   = (isset($params['correo']))   ? strip_tags($params['correo'])   : '';
+        $telefono   = (isset($params['telefono']))   ? strip_tags($params['telefono'])   : '';
+        $usuario   = (isset($params['usuario']))   ? strip_tags($params['usuario'])   : '';
+        $contrasenia  = (isset($params['contrasenia']))   ? strip_tags($params['contrasenia'])   : '';
+
+        $contraseniaEncriptada = md5($contrasenia);
+
+        if ($telefono != '' && $correo != '' && $apellidoMat != '' && $apellidoPat != '' && $nombre != '' && $usuario != '' && $correo != '' && $contraseniaEncriptada != '') {
+
+            $respuesta = $this->funciones->crearProductor($nombre, $apellidoPat, $apellidoMat, $correo, $telefono, $usuario, $contraseniaEncriptada);
+
+            if ($respuesta) {
+                $code = 200;
+            } else {
+                $code = 400;
+            }
+        } else {
+            $respuesta =  ['message' => 'Valores vacíos'];
+            $code = 400;
+        }
+
+
+        return $this->response($code, [$respuesta], $response);
+    }
 }
