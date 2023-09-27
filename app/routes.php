@@ -95,6 +95,8 @@ return function (App $app) {
 
     $app->get('/image/{nombre}', function (Request $request, Response $response, $data) {
         $imagen = ( isset( $data['nombre'] ) ) ? strip_tags( $data['nombre'] ) : '';
+        $response->getBody()->write($imagen);
+        return $response;
         if ($imagen != '') {
             $file ='../src/images/' .$imagen;
             if (!file_exists($file)) {
@@ -105,7 +107,7 @@ return function (App $app) {
                 die("error getting image");
             }
             $response->getBody()->write($image);
-            return $response->withHeader('Content-Type', 'image/png');
+            return $response->withHeader('Content-Type', 'image/jpeg');
         } else {
             die("error getting image");
         }
