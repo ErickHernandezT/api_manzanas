@@ -91,54 +91,58 @@ return function (App $app) {
         if (isset($_FILES['upload']['name'])) {
             $imageFolder = "../src/images/";
             $return = "https://nuconnect.mx/api/image/";
-            $file = $_FILES['upload']['tmp_name'];
-            $extension = pathinfo($_FILES['upload']['name'], PATHINFO_EXTENSION);
-            $nombre = 'Upload-' . uniqid() . '-' . date('dmY') . '.' . $extension;
-            $filetowrite = $imageFolder . $nombre;
-            move_uploaded_file($file, $filetowrite);
-    
-            // Aquí llamamos a la función CargarImagenBase64 para guardar la imagen
-            $data = CargarImagenBase64($imageFolder, $nombre, $file);
-    
-            // Eliminamos la lógica de generación de la URL ya que está en la función CargarImagenBase64
-            // y reemplazamos 'fileName' por 'ruta' y 'url' por 'nombre' en el array $data
-            $data = [
-                'ruta' => $data['ruta'],
-                'nombre' => $data['nombre'],
-                'uploaded' => 1
-            ];
+           $valores = CargarImagenBase64($imageFolder, $_FILES['name'], $_FILES['upload']);
+            $data = array(
+                'fileName' => $valores['nombre'],
+                'uploaded' => 1,
+                'url' => $return . $valores['ruta']
+            );
         } else {
             $data = [
                 'success' => false,
                 'message' => 'Not allowed image'
             ];
         }
-    
         $response->getBody()->write(json_encode($data));
         return $response;
+        // return response( 200, $data, $response );
     });
-    
-    // La función CargarImagenBase64 permanece igual
+
+
+     //Funcion que guarda una imagen en un directorio especificado
      function CargarImagenBase64($directorio_destino, $nombre, $tmp_name)
-    {
-        $baseFromJavascript = $tmp_name;
-        $base_to_php = explode(',', $baseFromJavascript);
-        $data = base64_decode($base_to_php[1]);
-        $data_2 = explode(';', $base_to_php[0])[0];
-        $type = explode(':', $data_2)[1];
-        $extencion = explode('/', $type)[1];
-    
-        if (mb_strtolower($extencion) == 'svg+xml') {
-            $extencion = 'svg';
-        }
-    
-        $nombre_final = $directorio_destino . "/" . $nombre . "." . $extencion;
-        $nombre_corto = $nombre . "." . $extencion;
-        $filepath = $nombre_final;
-    
-        file_put_contents($filepath, $data);
-        return (array("ruta" => $nombre_final, "nombre" => $nombre_corto));
-    }
+     {
+         // Imagen base64 enviada desde javascript en el formulario
+         // En este caso, con PHP plano podriamos obtenerla usando :
+         // $baseFromJavascript = $_POST['base64'];
+         $baseFromJavascript = $tmp_name;
+ 
+         // Nuestro base64 contiene un esquema Data URI (data:image/png;base64,)
+         // que necesitamos remover para poder guardar nuestra imagen
+         // Usa explode para dividir la cadena de texto en la , (coma)
+         $base_to_php = explode(',', $baseFromJavascript);
+         // El segundo item del array base_to_php contiene la información que necesitamos (base64 plano)
+         // y usar base64_decode para obtener la información binaria de la imagen
+         $data = base64_decode($base_to_php[1]);
+         $data_2 = explode(';', $base_to_php[0])[0];
+         $type = explode(':', $data_2)[1];
+         $extencion = explode('/', $type)[1];
+ 
+         if (mb_strtolower($extencion) == 'svg+xml') {
+             $extencion = 'svg';
+         }
+ 
+         // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
+         $nombre_final = $directorio_destino . "/" . $nombre . "." . $extencion;
+         $nombre_corto = $nombre . "." . $extencion;
+         $filepath = $nombre_final; // or image.jpg
+ 
+         // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
+         file_put_contents($filepath, $data);
+         return (array("ruta" => $nombre_final, "nombre" => $nombre_corto));
+     }
+
+
     
 
 
