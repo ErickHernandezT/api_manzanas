@@ -66,7 +66,7 @@ return function (App $app) {
 
 
 
-    $app->post('/image/{nombre}', function (Request $request, Response $response, $data) {
+    $app->get('/image/{nombre}', function (Request $request, Response $response, $data) {
         $imagen = ( isset( $data['nombre'] ) ) ? strip_tags( $data['nombre'] ) : '';
         if ($imagen != '') {
             $file ='../src/images/' .$imagen;
