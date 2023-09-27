@@ -89,7 +89,8 @@ return function (App $app) {
 
     $app->post('/saveImage/{data}', function (Request $request, Response $response, $args) {
         
-            $foto = ( isset( $data['foto'] ) ) ? strip_tags( $data['foto'] ) : '';
+        $params = (array)$request->getParsedBody();
+            $foto = ( isset( $params['foto'] ) ) ? strip_tags( $params['foto'] ) : '';
             $nombre = 'Upload-' . uniqid() . '-' . date('dmY');
             $imageFolder = "../src/images/";
             $return = "https://nuconnect.mx/api/image/";
