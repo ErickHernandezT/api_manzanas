@@ -91,7 +91,9 @@ return function (App $app) {
         
         $params = (array)$request->getParsedBody();
             $foto = ( isset( $params['foto'] ) ) ? strip_tags( $params['foto'] ) : '';
-            $nombre = 'Upload-' . uniqid() . '-' . date('dmY');
+
+            if($foto != ''){
+                $nombre = 'Upload-' . uniqid() . '-' . date('dmY');
             $imageFolder = "../src/images/";
             $return = "https://nuconnect.mx/api/image/";
            $valores = CargarImagenBase64($imageFolder, $nombre, $foto);
@@ -102,6 +104,12 @@ return function (App $app) {
             );
         $response->getBody()->write(json_encode($data));
         return $response;
+            }else{
+                $mensaje = ['message' => 'Datos incorrectos o vacíos'];
+                
+        return $mensaje;
+            }
+            
         // return response( 200, $data, $response );
     });
 
