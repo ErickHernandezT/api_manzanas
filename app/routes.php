@@ -111,7 +111,7 @@ return function (App $app) {
         } else {
             die("error getting image");
         }
-    });
+    }); 
 
 
 
