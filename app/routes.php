@@ -95,10 +95,10 @@ return function (App $app) {
 
     $app->get('/image/{nombre}', function (Request $request, Response $response, $data) {
         $imagen = ( isset( $data['nombre'] ) ) ? strip_tags( $data['nombre'] ) : '';
-        $response->getBody()->write($imagen);
-        return $response;
+        // $response->getBody()->write('Holaaaaaa');
+        // return $response;
         if ($imagen != '') {
-            $file ='../src/images/' .$imagen;
+            $file ='../src/images/' .$imagen . '.jpeg';
             if (!file_exists($file)) {
                 die("file:$file");
             }
