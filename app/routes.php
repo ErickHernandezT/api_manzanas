@@ -138,6 +138,7 @@ return function (App $app) {
          $filepath = $nombre_final; // or image.jpg
  
          // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
+         echo($data);
          file_put_contents($filepath, $data);
          return (array("ruta" => $nombre_final, "nombre" => $nombre_corto));
      }
