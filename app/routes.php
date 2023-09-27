@@ -66,6 +66,87 @@ return function (App $app) {
 
 
 
+    $app->get('/image/{nombre}', function (Request $request, Response $response, $data) {
+        $imagen = ( isset( $data['nombre'] ) ) ? strip_tags( $data['nombre'] ) : '';
+        if ($imagen != '') {
+            $file ='../src/images/' .$imagen;
+            if (!file_exists($file)) {
+                die("file:$file");
+            }
+            $image = file_get_contents($file);
+            if ($image === false) {
+                die("error getting image");
+            }
+            $response->getBody()->write($image);
+            return $response->withHeader('Content-Type', 'image/png');
+        } else {
+            die("error getting image");
+        }
+    });
+
+
+
+
+    $app->post('/saveImage/{data}', function (Request $request, Response $response, $args) {
+        if (isset($_FILES['upload']['name'])) {
+            $imageFolder = "../src/images/";
+            $return = "https://nuconnect.mx/api/image/";
+            $file = $_FILES['upload']['tmp_name'];
+            $extension = pathinfo($_FILES['upload']['name'], PATHINFO_EXTENSION);
+            $nombre = 'Upload-' . uniqid() . '-' . date('dmY') . '.' . $extension;
+            $filetowrite = $imageFolder . $nombre;
+            move_uploaded_file($file, $filetowrite);
+    
+            // Aquí llamamos a la función CargarImagenBase64 para guardar la imagen
+            $data = CargarImagenBase64($imageFolder, $nombre, $file);
+    
+            // Eliminamos la lógica de generación de la URL ya que está en la función CargarImagenBase64
+            // y reemplazamos 'fileName' por 'ruta' y 'url' por 'nombre' en el array $data
+            $data = [
+                'ruta' => $data['ruta'],
+                'nombre' => $data['nombre'],
+                'uploaded' => 1
+            ];
+        } else {
+            $data = [
+                'success' => false,
+                'message' => 'Not allowed image'
+            ];
+        }
+    
+        $response->getBody()->write(json_encode($data));
+        return $response;
+    });
+    
+    // La función CargarImagenBase64 permanece igual
+     function CargarImagenBase64($directorio_destino, $nombre, $tmp_name)
+    {
+        $baseFromJavascript = $tmp_name;
+        $base_to_php = explode(',', $baseFromJavascript);
+        $data = base64_decode($base_to_php[1]);
+        $data_2 = explode(';', $base_to_php[0])[0];
+        $type = explode(':', $data_2)[1];
+        $extencion = explode('/', $type)[1];
+    
+        if (mb_strtolower($extencion) == 'svg+xml') {
+            $extencion = 'svg';
+        }
+    
+        $nombre_final = $directorio_destino . "/" . $nombre . "." . $extencion;
+        $nombre_corto = $nombre . "." . $extencion;
+        $filepath = $nombre_final;
+    
+        file_put_contents($filepath, $data);
+        return (array("ruta" => $nombre_final, "nombre" => $nombre_corto));
+    }
+    
+
+
+
+
+
+
+
     //Grupo para Actividades
     $app->group('/actividad', function (Group $group) {
         //ruta para ingresar una actividad
