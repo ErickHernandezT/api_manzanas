@@ -90,25 +90,25 @@ return function (App $app) {
     $app->post('/saveImage/{data}', function (Request $request, Response $response, $args) {
         
         $params = (array)$request->getParsedBody();
-            $foto = ( isset( $params['foto'] ) ) ? strip_tags( $params['foto'] ) : '';
+        $foto = ( isset( $params['foto'] ) ) ? strip_tags( $params['foto'] ) : '';
 
-            if($foto != ''){
-                $nombre = 'Upload-' . uniqid() . '-' . date('dmY');
+        if($foto != ''){
+            $nombre = 'Upload-' . uniqid() . '-' . date('dmY');
             $imageFolder = "../src/images/";
             $return = "https://nuconnect.mx/api/image/";
-           $valores = CargarImagenBase64($imageFolder, $nombre, $foto);
+            $valores = CargarImagenBase64($imageFolder, $nombre, $foto);
             $data = array(
-                'fileName' => $valores['nombre'],
+                'fileName' => $valores,
                 'uploaded' => 1,
-                'url' => $return . $valores['ruta']
+                'url' => $foto
             );
-        $response->getBody()->write(json_encode($data));
-        return $response;
-            }else{
-                $mensaje = ['message' => 'Datos incorrectos o vacíos'];
-                
-        return $mensaje;
-            }
+            $response->getBody()->write(json_encode($data));
+            return $response;
+        }else{
+            $mensaje = ['message' => 'Datos incorrectos o vacíos'];
+            
+            return $mensaje;
+        }
             
         // return response( 200, $data, $response );
     });
@@ -128,7 +128,7 @@ return function (App $app) {
          $base_to_php = explode(',', $baseFromJavascript);
          // El segundo item del array base_to_php contiene la información que necesitamos (base64 plano)
          // y usar base64_decode para obtener la información binaria de la imagen
-         $data = base64_decode($base_to_php[0]);
+         $data = base64_decode($base_to_php[1]);
         
          $extencion = "jpeg";
  
@@ -138,7 +138,6 @@ return function (App $app) {
          $filepath = $nombre_final; // or image.jpg
  
          // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
-         echo($data);
          file_put_contents($filepath, $data);
          return (array("ruta" => $nombre_final, "nombre" => $nombre_corto));
      }
