@@ -119,7 +119,7 @@ return function (App $app) {
          $base_to_php = explode(',', $baseFromJavascript);
          // El segundo item del array base_to_php contiene la información que necesitamos (base64 plano)
          // y usar base64_decode para obtener la información binaria de la imagen
-         $data = base64_decode($base_to_php[1]);
+         $data = base64_decode($base_to_php[0]);
         
          $extencion = "jpeg";
  
