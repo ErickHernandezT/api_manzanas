@@ -14,6 +14,33 @@ use App\Application\Actions\Login\loginController;
 use App\Application\Actions\Manzana\manzanaController;
 use App\Application\Actions\puntoVenta\puntoVentaController;
 
+function CargarImagenBase64($directorio_destino, $nombre, $tmp_name)
+{
+    // Imagen base64 enviada desde javascript en el formulario
+    // En este caso, con PHP plano podriamos obtenerla usando :
+    // $baseFromJavascript = $_POST['base64'];
+    $baseFromJavascript = $tmp_name;
+
+    // Nuestro base64 contiene un esquema Data URI (data:image/png;base64,)
+    // que necesitamos remover para poder guardar nuestra imagen
+    // Usa explode para dividir la cadena de texto en la , (coma)
+    $base_to_php = explode(',', $baseFromJavascript);
+    // El segundo item del array base_to_php contiene la información que necesitamos (base64 plano)
+    // y usar base64_decode para obtener la información binaria de la imagen
+    $data = base64_decode($base_to_php[1]);
+   
+    $extencion = "jpeg";
+
+    // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
+    $nombre_final = $directorio_destino . "/" . $nombre . "." . $extencion;
+    $nombre_corto = $nombre . "." . $extencion;
+    $filepath = $nombre_final; // or image.jpg
+
+    // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
+    file_put_contents($filepath, $data);
+    return (array("ruta" => $nombre_final, "nombre" => $nombre_corto));
+}
+
 return function (App $app) {
     $app->add(new Tuupola\Middleware\JwtAuthentication([
         // Rutas que requieren el token
@@ -46,7 +73,7 @@ return function (App $app) {
         $response = $handler->handle($request);
         return $response
             ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+            ->withHeader('Access-Control-Allow-Methods', 'GET, POST')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withHeader('Access-Control-Allow-Credentials', 'true');
     });
@@ -112,43 +139,6 @@ return function (App $app) {
             
         // return response( 200, $data, $response );
     });
-
-
-     //Funcion que guarda una imagen en un directorio especificado
-     function CargarImagenBase64($directorio_destino, $nombre, $tmp_name)
-     {
-         // Imagen base64 enviada desde javascript en el formulario
-         // En este caso, con PHP plano podriamos obtenerla usando :
-         // $baseFromJavascript = $_POST['base64'];
-         $baseFromJavascript = $tmp_name;
- 
-         // Nuestro base64 contiene un esquema Data URI (data:image/png;base64,)
-         // que necesitamos remover para poder guardar nuestra imagen
-         // Usa explode para dividir la cadena de texto en la , (coma)
-         $base_to_php = explode(',', $baseFromJavascript);
-         // El segundo item del array base_to_php contiene la información que necesitamos (base64 plano)
-         // y usar base64_decode para obtener la información binaria de la imagen
-         $data = base64_decode($base_to_php[1]);
-        
-         $extencion = "jpeg";
- 
-         // Proporciona una locación a la nueva imagen (con el nombre y formato especifico)
-         $nombre_final = $directorio_destino . "/" . $nombre . "." . $extencion;
-         $nombre_corto = $nombre . "." . $extencion;
-         $filepath = $nombre_final; // or image.jpg
- 
-         // Finalmente guarda la imágen en el directorio especificado y con la informacion dada
-         file_put_contents($filepath, $data);
-         return (array("ruta" => $nombre_final, "nombre" => $nombre_corto));
-     }
-
-
-    
-
-
-
-
-
 
 
     //Grupo para Actividades
@@ -238,7 +228,10 @@ return function (App $app) {
     });
 
 
-    
+    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+        $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
+        return $handler($req, $res);
+    });
 
 
 };
