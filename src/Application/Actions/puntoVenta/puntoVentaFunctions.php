@@ -28,12 +28,6 @@ class puntoVentaFunctions
         $statement = $this->DB->Buscar($sql2, []);
     
         if (is_array($statement) && count($statement) > 0) {
-            // Codifica la imagen en formato base64 y agrégala al resultado
-            foreach ($statement as &$row) {
-                if ($row['foto'] !== null) {
-                    $row['foto'] = base64_encode($row['foto']);
-                }
-            }
             return $statement;
         } else {
             return ['message' =>  $statement];
@@ -51,10 +45,6 @@ class puntoVentaFunctions
         $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
     
         if (is_array($result) && count($result) > 0) {
-            // Codifica la imagen en formato base64 si la foto no es nula
-            if ($result[0]['foto'] !== null) {
-                $result[0]['foto'] = base64_encode($result[0]['foto']);
-            }
             return $result[0]; // Devuelve la primera fila que coincide con el ID
         } else {
             return ['message' => 'No se encontró ningun punto de venta con el ID proporcionado'];
@@ -63,24 +53,24 @@ class puntoVentaFunctions
 
 
 
-    public function ingresarPuntoVenta(String $nombre, $blobData, String $latitud, String $longitud, int $estatus, String $horario)
+    public function ingresarPuntoVenta(String $nombre, String $foto, String $latitud, String $longitud, int $estatus, String $horario)
     {
         // Se usa left join para que también muestre los productos que no tengan
         $sql2 = "INSERT INTO punto_venta (nombre, foto, latitud, longitud, estatus, horario) VALUES (?, ?, ?, ?, ?, ?)";
 
-        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $blobData, $latitud, $longitud, $estatus, $horario]);
+        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $foto, $latitud, $longitud, $estatus, $horario]);
         return ($statement == '200') ? true : false;
     }
 
 
 
-    public function actualizarPuntoVenta(int $id, String $nombre, $blobData, String $latitud, String $longitud, int $estatus, String $horario)
+    public function actualizarPuntoVenta(int $id, String $nombre, String $foto, String $latitud, String $longitud, int $estatus, String $horario)
     {
         // Query SQL para actualizar los datos en la tabla manzana
         $sql = "UPDATE punto_venta SET nombre = ?, foto = ?, latitud = ?, longitud = ?, estatus = ?, horario = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
-        $parametros = [$nombre, $blobData, $latitud, $longitud, $estatus, $horario, $id];
+        $parametros = [$nombre, $foto, $latitud, $longitud, $estatus, $horario, $id];
 
         // Ejecutamos la consulta
         $resultado = $this->DB->Ejecutar_Seguro_UTF8($sql, $parametros);

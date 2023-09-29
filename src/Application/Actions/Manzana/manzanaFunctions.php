@@ -30,15 +30,10 @@ class manzanaFunctions
         $statement = $this->DB->Buscar($sql2, []);
 
         if (is_array($statement) && count($statement) > 0) {
-            // Codifica la imagen en formato base64 y agrégala al resultado
-            foreach ($statement as &$row) {
-                if ($row['foto'] !== null) {
-                    $row['foto'] = base64_encode($row['foto']);
-                }
-            }
+
             return $statement;
         } else {
-            return ['message' =>  $statement];
+            return ['message' =>  "Error al mostrar las manzanas"];
         }
     }
 
@@ -52,13 +47,9 @@ class manzanaFunctions
         $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
 
         if (is_array($result) && count($result) > 0) {
-            // Codifica la imagen en formato base64 si la foto no es nula
-            if ($result[0]['foto'] !== null) {
-                $result[0]['foto'] = base64_encode($result[0]['foto']);
-            }
             return $result[0]; // Devuelve la primera fila que coincide con el ID
         } else {
-            return ['message' => 'No se encontró ninguna manzana con el ID proporcionado'];
+            return ['message' => 'Error al mostrar la manzana seleccionada'];
         }
     }
 
@@ -67,25 +58,25 @@ class manzanaFunctions
 
 
 
-    public function ingresarManzanas(String $nombre, $blobData, String $nivelMadurez, String $descripcion, Int $estatus, float $precio, Int $stock)
+    public function ingresarManzanas(String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precio, Int $stock)
     {
         // Se usa left join para que también muestre los productos que no tengan
         $sql2 = "INSERT INTO manzana (nombre, foto, nivelMadurez, descripcion, estatus, precio, stock) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $blobData, $nivelMadurez, $descripcion, $estatus, $precio, $stock]);
+        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precio, $stock]);
         return ($statement == '200') ? true : false;
     }
 
 
 
 
-    public function actualizarManzanas(int $id, String $nombre, $blobData, String $nivelMadurez, String $descripcion, Int $estatus, float $precio, Int $stock)
+    public function actualizarManzanas(int $id, String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precio, Int $stock)
     {
         // Query SQL para actualizar los datos en la tabla manzana
         $sql = "UPDATE manzana SET nombre = ?, foto = ?, nivelMadurez = ?, descripcion = ?, estatus = ?, precio = ?, stock = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
-        $parametros = [$nombre, $blobData, $nivelMadurez, $descripcion, $estatus, $precio, $stock, $id];
+        $parametros = [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precio, $stock, $id];
 
         // Ejecutamos la consulta
         $resultado = $this->DB->Ejecutar_Seguro_UTF8($sql, $parametros);

@@ -23,28 +23,19 @@ class derivadosManzanaController extends generalController
         $params = (array)$request->getParsedBody();
 
         $nombre = (isset($params['nombre'])) ? strip_tags($params['nombre']) : '';
+        $foto = (isset($params['foto'])) ? strip_tags($params['foto']) : '';
         $descripcion = (isset($params['descripcion'])) ? strip_tags($params['descripcion']) : '';
 
-        $uploadedFile = $request->getUploadedFiles()['foto'];
 
-        $mensaje = ['message' => ''];
 
-        if ($nombre != '' && $descripcion != '' ) {
-            // Verifica que la foto se haya cargado correctamente
-            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                // El archivo se cargó correctamente
-                $blobData = $uploadedFile->getStream();
+        if ($nombre != '' && $foto != '' && $descripcion != '') {
 
-                $mensaje = $this->funciones->ingresarDerivadoManzana($nombre, $blobData, $descripcion);
+            $mensaje = $this->funciones->ingresarDerivadoManzana($nombre, $foto, $descripcion);
 
-                if ($mensaje) {
-                    $code = 200;
-                } else {
-                    $code = 404;
-                }
+            if ($mensaje) {
+                $code = 200;
             } else {
-                $code = 400;
-                $mensaje = ['message' => 'Error al cargar la foto'];
+                $code = 404;
             }
         } else {
             $code = 400;
@@ -59,17 +50,17 @@ class derivadosManzanaController extends generalController
 
     public function validarListaDerivadosManzana($request, $response, $args)
     {
-        
 
-            $mensaje = $this->funciones->listaDerivadosManzana();
 
-            if ($mensaje) {
-                $code = 200;
-            } else {
-                $code = 404;
-                $mensaje = ['message' => 'Productos derivados de manzana no encontrados'];
-            }
-       
+        $mensaje = $this->funciones->listaDerivadosManzana();
+
+        if ($mensaje) {
+            $code = 200;
+        } else {
+            $code = 404;
+            $mensaje = ['message' => 'Productos derivados de manzana no encontrados'];
+        }
+
 
         // Retornamos la respuesta
         return $this->response($code, $mensaje, $response);
@@ -84,28 +75,17 @@ class derivadosManzanaController extends generalController
 
         $id = (isset($params['id'])) ? (int)strip_tags($params['id']) : 0;
         $nombre = (isset($params['nombre'])) ? strip_tags($params['nombre']) : '';
+        $foto = (isset($params['foto'])) ? strip_tags($params['foto']) : '';
         $descripcion = (isset($params['descripcion'])) ? strip_tags($params['descripcion']) : '';
 
-        $uploadedFile = $request->getUploadedFiles()['foto'];
+        if ($id > 0 && $nombre != '' && $foto != '' && $descripcion != '') {
 
-        $mensaje = ['message' => ''];
+            $mensaje = $this->funciones->actualizarDerivadoManzana($id, $nombre, $foto, $descripcion);
 
-        if ($id > 0 && $nombre != '' && $descripcion != '' ) {
-            // Verifica que la foto se haya cargado correctamente
-            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                // El archivo se cargó correctamente
-                $blobData = $uploadedFile->getStream();
-
-                $mensaje = $this->funciones->actualizarDerivadoManzana($id, $nombre, $blobData, $descripcion);
-
-                if ($mensaje) {
-                    $code = 200;
-                } else {
-                    $code = 404;
-                }
+            if ($mensaje) {
+                $code = 200;
             } else {
-                $code = 400;
-                $mensaje = ['message' => 'Error al cargar la foto'];
+                $code = 404;
             }
         } else {
             $code = 400;
@@ -115,7 +95,7 @@ class derivadosManzanaController extends generalController
         // Retornamos la respuesta
         return $this->response($code, [$mensaje], $response);
     }
-    
+
 
 
     public function validarEliminarDerivadoManzana($request, $response, $args)
@@ -128,16 +108,15 @@ class derivadosManzanaController extends generalController
         $mensaje = ['message' => ''];
 
         if ($id > 0) {
-            
 
-                $mensaje = $this->funciones->eliminarDerivadoManzana($id);
 
-                if ($mensaje) {
-                    $code = 200;
-                } else {
-                    $code = 404;
-                }
-           
+            $mensaje = $this->funciones->eliminarDerivadoManzana($id);
+
+            if ($mensaje) {
+                $code = 200;
+            } else {
+                $code = 404;
+            }
         } else {
             $code = 400;
             $mensaje = ['message' => 'Datos incorrectos o vacíos'];
@@ -158,17 +137,15 @@ class derivadosManzanaController extends generalController
 
         $mensaje = ['message' => ''];
 
-        if ($id != '') {
-            
+        if ($id > 0) {
 
-                $mensaje = $this->funciones->buscarDerivadoManzanaPorId($id);
+            $mensaje = $this->funciones->buscarDerivadoManzanaPorId($id);
 
-                if ($mensaje) {
-                    $code = 200;
-                } else {
-                    $code = 404;
-                }
-           
+            if ($mensaje) {
+                $code = 200;
+            } else {
+                $code = 404;
+            }
         } else {
             $code = 400;
             $mensaje = ['message' => 'Datos incorrectos o vacíos'];
@@ -177,7 +154,4 @@ class derivadosManzanaController extends generalController
         // Retornamos la respuesta
         return $this->response($code, [$mensaje], $response);
     }
-
-
-
 }

@@ -23,28 +23,20 @@ class actividadController extends generalController
         $params = (array)$request->getParsedBody();
 
         $nombre = (isset($params['nombre'])) ? strip_tags($params['nombre']) : '';
+        $foto = (isset($params['foto'])) ? strip_tags($params['foto']) : '';
         $descripcion = (isset($params['descripcion'])) ? strip_tags($params['descripcion']) : '';
 
-        $uploadedFile = $request->getUploadedFiles()['foto'];
+
 
         $mensaje = ['message' => ''];
 
-        if ($nombre != '' && $descripcion != '' ) {
-            // Verifica que la foto se haya cargado correctamente
-            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                // El archivo se cargó correctamente
-                $blobData = $uploadedFile->getStream();
+        if ($nombre != '' && $descripcion != '' && $foto != '') {
+            $mensaje = $this->funciones->ingresarActividad($nombre, $foto, $descripcion);
 
-                $mensaje = $this->funciones->ingresarActividad($nombre, $blobData, $descripcion);
-
-                if ($mensaje) {
-                    $code = 200;
-                } else {
-                    $code = 404;
-                }
+            if ($mensaje) {
+                $code = 200;
             } else {
-                $code = 400;
-                $mensaje = ['message' => 'Error al cargar la foto'];
+                $code = 404;
             }
         } else {
             $code = 400;
@@ -59,17 +51,17 @@ class actividadController extends generalController
 
     public function validarListaActividades($request, $response, $args)
     {
-        
 
-            $mensaje = $this->funciones->listaActividades();
 
-            if ($mensaje) {
-                $code = 200;
-            } else {
-                $code = 404;
-                $mensaje = ['message' => 'Actividades no encontradas'];
-            }
-       
+        $mensaje = $this->funciones->listaActividades();
+
+        if ($mensaje) {
+            $code = 200;
+        } else {
+            $code = 404;
+            $mensaje = ['message' => 'Actividades no encontradas'];
+        }
+
 
         // Retornamos la respuesta
         return $this->response($code, $mensaje, $response);
@@ -84,28 +76,21 @@ class actividadController extends generalController
 
         $id = (isset($params['id'])) ? (int)strip_tags($params['id']) : 0;
         $nombre = (isset($params['nombre'])) ? strip_tags($params['nombre']) : '';
+        $foto = (isset($params['foto'])) ? strip_tags($params['foto']) : '';
         $descripcion = (isset($params['descripcion'])) ? strip_tags($params['descripcion']) : '';
 
-        $uploadedFile = $request->getUploadedFiles()['foto'];
+
 
         $mensaje = ['message' => ''];
 
-        if ($id > 0 && $nombre != '' && $descripcion != '' ) {
-            // Verifica que la foto se haya cargado correctamente
-            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                // El archivo se cargó correctamente
-                $blobData = $uploadedFile->getStream();
+        if ($id > 0 && $nombre != '' && $foto != '' && $descripcion != '') {
 
-                $mensaje = $this->funciones->actualizarActividad($id, $nombre, $blobData, $descripcion);
+            $mensaje = $this->funciones->actualizarActividad($id, $nombre, $foto, $descripcion);
 
-                if ($mensaje) {
-                    $code = 200;
-                } else {
-                    $code = 404;
-                }
+            if ($mensaje) {
+                $code = 200;
             } else {
-                $code = 400;
-                $mensaje = ['message' => 'Error al cargar la foto'];
+                $code = 404;
             }
         } else {
             $code = 400;
@@ -115,7 +100,7 @@ class actividadController extends generalController
         // Retornamos la respuesta
         return $this->response($code, [$mensaje], $response);
     }
-    
+
 
 
     public function validarEliminarActividad($request, $response, $args)
@@ -128,16 +113,13 @@ class actividadController extends generalController
         $mensaje = ['message' => ''];
 
         if ($id > 0) {
-            
+            $mensaje = $this->funciones->eliminarActividad($id);
 
-                $mensaje = $this->funciones->eliminarActividad($id);
-
-                if ($mensaje) {
-                    $code = 200;
-                } else {
-                    $code = 404;
-                }
-           
+            if ($mensaje) {
+                $code = 200;
+            } else {
+                $code = 404;
+            }
         } else {
             $code = 400;
             $mensaje = ['message' => 'Datos incorrectos o vacíos'];
@@ -158,17 +140,15 @@ class actividadController extends generalController
 
         $mensaje = ['message' => ''];
 
-        if ($id != '') {
+        if ($id > 0) {
             
+            $mensaje = $this->funciones->buscarActividadPorId($id);
 
-                $mensaje = $this->funciones->buscarActividadPorId($id);
-
-                if ($mensaje) {
-                    $code = 200;
-                } else {
-                    $code = 404;
-                }
-           
+            if ($mensaje) {
+                $code = 200;
+            } else {
+                $code = 404;
+            }
         } else {
             $code = 400;
             $mensaje = ['message' => 'Datos incorrectos o vacíos'];
@@ -177,7 +157,4 @@ class actividadController extends generalController
         // Retornamos la respuesta
         return $this->response($code, [$mensaje], $response);
     }
-
-
-
 }

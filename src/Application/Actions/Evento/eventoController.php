@@ -23,33 +23,26 @@ class eventoController extends generalController
         $params = (array)$request->getParsedBody();
 
         $nombre = (isset($params['nombre'])) ? strip_tags($params['nombre']) : '';
+        $foto = (isset($params['foto'])) ? strip_tags($params['foto']) : '';
         $fechaInicio = (isset($params['fechaInicio'])) ? strip_tags($params['fechaInicio']) : '';
         $fechaFin = (isset($params['fechaFin'])) ? strip_tags($params['fechaFin']) : '';
         $latitud = (isset($params['latitud'])) ? strip_tags($params['latitud']) : '';
         $longitud = (isset($params['longitud'])) ? strip_tags($params['longitud']) : '';
         $descripcion = (isset($params['descripcion'])) ? strip_tags($params['descripcion']) : '';
 
-        $uploadedFile = $request->getUploadedFiles()['foto'];
+     
 
         $mensaje = ['message' => ''];
 
-        if ($nombre != '' && $fechaInicio != '' && $fechaFin != '' && $latitud != '' &&  $longitud != '' &&  $descripcion != '' ) {
-            // Verifica que la foto se haya cargado correctamente
-            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                // El archivo se cargó correctamente
-                $blobData = $uploadedFile->getStream();
+        if ($nombre != '' && $foto != '' && $fechaInicio != '' && $fechaFin != '' && $latitud != '' &&  $longitud != '' &&  $descripcion != '' ) {
 
-                $mensaje = $this->funciones->ingresarEvento($nombre, $blobData, $fechaInicio, $fechaFin, $latitud, $longitud, $descripcion);
+                $mensaje = $this->funciones->ingresarEvento($nombre, $foto, $fechaInicio, $fechaFin, $latitud, $longitud, $descripcion);
 
                 if ($mensaje) {
                     $code = 200;
                 } else {
                     $code = 404;
                 }
-            } else {
-                $code = 400;
-                $mensaje = ['message' => 'Error al cargar la foto'];
-            }
         } else {
             $code = 400;
             $mensaje = ['message' => 'Datos incorrectos o vacíos'];
@@ -88,33 +81,29 @@ class eventoController extends generalController
 
         $id = (isset($params['id'])) ? (int)strip_tags($params['id']) : 0;
         $nombre = (isset($params['nombre'])) ? strip_tags($params['nombre']) : '';
+        $foto = (isset($params['foto'])) ? strip_tags($params['foto']) : '';
         $fechaInicio = (isset($params['fechaInicio'])) ? strip_tags($params['fechaInicio']) : '';
         $fechaFin = (isset($params['fechaFin'])) ? strip_tags($params['fechaFin']) : '';
         $latitud = (isset($params['latitud'])) ? strip_tags($params['latitud']) : '';
         $longitud = (isset($params['longitud'])) ? strip_tags($params['longitud']) : '';
         $descripcion = (isset($params['descripcion'])) ? strip_tags($params['descripcion']) : '';
 
-        $uploadedFile = $request->getUploadedFiles()['foto'];
+        
 
         $mensaje = ['message' => ''];
 
-        if ($id > 0  && $nombre != '' && $fechaInicio != '' && $fechaFin != '' && $latitud != '' &&  $longitud != '' &&  $descripcion != '') {
+        if ($id > 0  && $nombre != '' && $foto != '' && $fechaInicio != '' && $fechaFin != '' && $latitud != '' &&  $longitud != '' &&  $descripcion != '') {
             // Verifica que la foto se haya cargado correctamente
-            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-                // El archivo se cargó correctamente
-                $blobData = $uploadedFile->getStream();
+           
 
-                $mensaje = $this->funciones->actualizarEvento($id, $nombre, $blobData, $fechaInicio, $fechaFin, $latitud, $longitud, $descripcion );
+                $mensaje = $this->funciones->actualizarEvento($id, $nombre, $foto, $fechaInicio, $fechaFin, $latitud, $longitud, $descripcion );
 
                 if ($mensaje) {
                     $code = 200;
                 } else {
                     $code = 404;
                 }
-            } else {
-                $code = 400;
-                $mensaje = ['message' => 'Error al cargar la foto'];
-            }
+            
         } else {
             $code = 400;
             $mensaje = ['message' => 'Datos incorrectos o vacíos'];
@@ -166,7 +155,7 @@ class eventoController extends generalController
 
         $mensaje = ['message' => ''];
 
-        if ($id != '') {
+        if ($id > 0) {
             
 
                 $mensaje = $this->funciones->buscarEventoPorId($id);

@@ -28,12 +28,6 @@ class eventoFunctions
         $statement = $this->DB->Buscar($sql, []);
     
         if (is_array($statement) && count($statement) > 0) {
-            // Codifica la imagen en formato base64 y agrégala al resultado
-            foreach ($statement as &$row) {
-                if ($row['foto'] !== null) {
-                    $row['foto'] = base64_encode($row['foto']);
-                }
-            }
             return $statement;
         } else {
             return ['message' =>  $statement];
@@ -51,10 +45,6 @@ class eventoFunctions
         $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
     
         if (is_array($result) && count($result) > 0) {
-            // Codifica la imagen en formato base64 si la foto no es nula
-            if ($result[0]['foto'] !== null) {
-                $result[0]['foto'] = base64_encode($result[0]['foto']);
-            }
             return $result[0]; // Devuelve la primera fila que coincide con el ID
         } else {
             return ['message' => 'No se encontró ningun evento con el ID proporcionado'];
@@ -63,24 +53,24 @@ class eventoFunctions
 
 
 
-    public function ingresarEvento(String $nombre, $blobData, String $fechaInicio, String $fechaFin, String $latitud, String $longitud, String $descripcion)
+    public function ingresarEvento(String $nombre, String $foto, String $fechaInicio, String $fechaFin, String $latitud, String $longitud, String $descripcion)
     {
         // Se usa left join para que también muestre los productos que no tengan
         $sql2 = "INSERT INTO evento (nombre, foto, fechaInicio, fechaFin, latitud, longitud, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $blobData, $fechaInicio, $fechaFin, $latitud, $longitud, $descripcion]);
+        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $foto, $fechaInicio, $fechaFin, $latitud, $longitud, $descripcion]);
         return ($statement == '200') ? true : false;
     }
 
 
 
-    public function actualizarEvento(int $id, String $nombre, $blobData, String $fechaInicio, String $fechaFin, String $latitud, String $longitud, String $descripcion)
+    public function actualizarEvento(int $id, String $nombre, String $foto, String $fechaInicio, String $fechaFin, String $latitud, String $longitud, String $descripcion)
     {
         // Query SQL para actualizar los datos en la tabla manzana
         $sql = "UPDATE evento SET nombre = ?, foto = ?, fechaInicio = ?, fechaFin = ?, latitud = ?, longitud = ?, descripcion = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
-        $parametros = [$nombre, $blobData, $fechaInicio, $fechaFin, $latitud, $longitud, $descripcion, $id];
+        $parametros = [$nombre, $foto, $fechaInicio, $fechaFin, $latitud, $longitud, $descripcion, $id];
 
         // Ejecutamos la consulta
         $statement = $this->DB->Ejecutar_Seguro_UTF8($sql, $parametros);
