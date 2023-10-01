@@ -45,7 +45,7 @@ return function (App $app) {
     $app->add(new Tuupola\Middleware\JwtAuthentication([
         // Rutas que requieren el token
         "path" => [
-            "/Manzana"
+            "/Actividad", '/Carrito', '/DerivadosManzana', '/Eventos', '/Manzana', '/PuntoVenta'
         ],
         // "Rutas que no requieren el token"
         "secret" => 'a84125e55c207450dba07c6cb3e7b999',
@@ -91,6 +91,32 @@ return function (App $app) {
     //ruta para registrarun productor
     $app->post('/registrarProductor', loginController::class . ':validarCrearProductor');
 
+
+
+    //Grupo para Actividades
+    $app->group('/Dashboard', function (Group $group) {
+        //ruta para listar actividades
+        $group->post('/listaActividades', actividadController::class . ':validarListaActividades');
+        //ruta para buscar una actividad por id
+        $group->post('/buscarActividad', actividadController::class . ':validarBuscarActividadId');
+         //ruta para listar los productos derivados de manzana
+         $group->post('/listaDerivadosManzana', derivadosManzanaController::class . ':validarListaDerivadosManzana');
+         //ruta para buscar un producto derivado de manzana
+         $group->post('/buscarDerivadoManzana', derivadosManzanaController::class . ':validarBuscarDerivadoManzanaPorId');
+         //ruta para listar los eventos
+        $group->post('/listaEventos', eventoController::class . ':validarListaEventos');
+        //ruta para buscar un evento
+        $group->post('/buscarEvento', eventoController::class . ':validarBuscarEventoId');
+         //ruta para listar las manzanas
+         $group->post('/listaManzanas', manzanaController::class . ':validarListaManzanas');
+         //ruta para buscar una manzana
+         $group->post('/buscarManzana', manzanaController::class . ':validarBuscarManzanaPorId');
+          //ruta para listar los puntos de venta
+        $group->post('/listaPuntosVenta', puntoVentaController::class . ':validarListaPuntosVenta');
+        //ruta para buscar un punto de venta
+        $group->post('/buscarPuntoVenta', puntoVentaController::class . ':validarBuscarPuntoVentaPorId');
+         
+    });
 
 
     $app->get('/image/{nombre}', function (Request $request, Response $response, $data) {
@@ -144,14 +170,10 @@ return function (App $app) {
 
 
     //Grupo para Actividades
-    $app->group('/actividad', function (Group $group) {
+    $app->group('/Actividad', function (Group $group) {
         //ruta para ingresar una actividad
         $group->post('/registrar', actividadController::class . ':validarIngresarActividad');
-        //ruta para listar las actividades
-        $group->post('/lista', actividadController::class . ':validarListaActividades');
-        //ruta para buscar una actividad por id
-        $group->post('/buscar', actividadController::class . ':validarBuscarActividadId');
-        //ruta para actualizar una actividad
+        //ruta para actualizar las actividades
         $group->post('/actualizar', actividadController::class . ':validarActualizarActividad');
         //ruta para eliminar actividad
         $group->post('/eliminar', actividadController::class . ':validarEliminarActividad');
@@ -160,20 +182,16 @@ return function (App $app) {
 
 
     //Grupo para Carrito
-    $app->group('/carrito', function (Group $group) {
+    $app->group('/Carrito', function (Group $group) {
         //ruta para agregar productos al carrito
         $group->post('/agregarCarrito', carritoController::class . ':validarAgregarCarrito');
     });
 
 
     //Grupo para productos derivados manzana
-    $app->group('/derivadosManzana', function (Group $group) {
+    $app->group('/DerivadosManzana', function (Group $group) {
         //ruta para ingresar un producto derivado de manzana
         $group->post('/registrar', derivadosManzanaController::class . ':validarIngresarDerivadoManzana');
-        //ruta para listar los productos derivados de manzana
-        $group->post('/lista', derivadosManzanaController::class . ':validarListaDerivadosManzana');
-        //ruta para buscar un producto derivado de manzana
-        $group->post('/buscar', derivadosManzanaController::class . ':validarBuscarDerivadoManzanaPorId');
         //ruta para actualizar un producto derivado de manzana
         $group->post('/actualizar', derivadosManzanaController::class . ':validarActualizarDeribadoManzana');
         //ruta para eliminar producto derivado de manzana
@@ -186,10 +204,6 @@ return function (App $app) {
      $app->group('/Eventos', function (Group $group) {
         //ruta para ingresar un evento
         $group->post('/registrar', eventoController::class . ':validarIngresarEvento');
-        //ruta para listar los eventos
-        $group->post('/lista', eventoController::class . ':validarListaEventos');
-        //ruta para buscar un evento
-        $group->post('/buscar', eventoController::class . ':validarBuscarEventoId');
         //ruta para actualizar un evento
         $group->post('/actualizar', eventoController::class . ':validarActualizarEvento');
         //ruta para eliminar un evento
@@ -204,10 +218,6 @@ return function (App $app) {
     $app->group('/Manzana', function (Group $group) {
         //ruta para ingresar una manzana
         $group->post('/registrar', manzanaController::class . ':validarIngresarManzanas');
-        //ruta para listar las manzanas
-        $group->post('/lista', manzanaController::class . ':validarListaManzanas');
-        //ruta para buscar una manzana
-        $group->post('/buscar', manzanaController::class . ':validarBuscarManzanaPorId');
         //ruta para actualizar una manzana
         $group->post('/actualizar', manzanaController::class . ':validarActualizarManzanas');
         //ruta para eliminar una manzana
@@ -216,13 +226,9 @@ return function (App $app) {
 
 
     //Grupo para puntos de venta
-    $app->group('/puntoVenta', function (Group $group) {
+    $app->group('/PuntoVenta', function (Group $group) {
         //ruta para ingresar un punto de venta
         $group->post('/registrar', puntoVentaController::class . ':validarIngresarPuntoVenta');
-        //ruta para listar los puntos de venta
-        $group->post('/lista', puntoVentaController::class . ':validarListaPuntosVenta');
-        //ruta para buscar un punto de venta
-        $group->post('/buscar', puntoVentaController::class . ':validarBuscarPuntoVentaPorId');
         //ruta para actualizar un punto de venta
         $group->post('/actualizar', puntoVentaController::class . ':validarActualizarPuntoVenta');
         //ruta para eliminar un punto de venta
