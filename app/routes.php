@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Actions\Actividad\actividadController;
 use App\Application\Actions\Carrito\carritoController;
+use App\Application\Actions\derivadosManzana\derivadosManzanaController;
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -13,6 +14,7 @@ use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 use App\Application\Actions\Login\loginController;
 use App\Application\Actions\Manzana\manzanaController;
 use App\Application\Actions\puntoVenta\puntoVentaController;
+use App\Application\Actions\Evento\eventoController;
 
 function CargarImagenBase64($directorio_destino, $nombre, $tmp_name)
 {
