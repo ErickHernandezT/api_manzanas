@@ -30,7 +30,7 @@ class actividadFunctions
         if (is_array($statement) && count($statement) > 0) {
             return $statement;
         } else {
-            return ['message' =>  $statement];
+            return ['message' =>  "No se pudieron obtener la lista de actividades"];
         }
     }
 
