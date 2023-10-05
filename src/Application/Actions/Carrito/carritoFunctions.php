@@ -144,6 +144,84 @@ class carritoFunctions
 }
 
 
+
+public function modificarCarrito(int $idUsuario, int $idManzana, int $cantidad)
+{
+    try {
+        // Verificar si la manzana con el idManzana existe en la base de datos
+        $sqlManzanaExistente = "SELECT precio FROM manzana WHERE id = ?";
+        $manzanaExistente = $this->DB->Buscar_Seguro_UTF8($sqlManzanaExistente, [$idManzana]);
+
+        if (empty($manzanaExistente)) {
+            return ['error' => "La manzana con ID $idManzana no existe en la base de datos."];
+        }
+
+        // Verificar si existe un carrito para el usuario
+        $sqlCarritoExistente = "SELECT id, total FROM carrito WHERE idUsuario = ?";
+        $carritoExistente = $this->DB->Buscar_Seguro_UTF8($sqlCarritoExistente, [$idUsuario]);
+
+        if (empty($carritoExistente)) {
+            return ['error' => "No existe un carrito para el usuario con ID $idUsuario."];
+        }
+
+        $carritoId = $carritoExistente[0]['id'];
+        $totalCarritoExistente = $carritoExistente[0]['total'];
+
+        // Verificar si existe una entrada de esta manzana en el carrito
+        $sqlEntradaExistente = "SELECT id, cantidad FROM carrito_manzana WHERE idCarrito = ? AND idManzana = ?";
+        $entradaExistente = $this->DB->Buscar_Seguro_UTF8($sqlEntradaExistente, [$carritoId, $idManzana]);
+
+        if (empty($entradaExistente)) {
+            // Si no existe una entrada, crear una nueva con la cantidad proporcionada
+            $sqlInsertarCarritoManzana = "INSERT INTO carrito_manzana (idCarrito, idManzana, cantidad) VALUES (?, ?, ?)";
+            $this->DB->Ejecutar_Seguro_UTF8($sqlInsertarCarritoManzana, [$carritoId, $idManzana, $cantidad]);
+        } else {
+            // Si existe una entrada, obtener la cantidad existente
+            $entradaId = $entradaExistente[0]['id'];
+            $cantidadExistente = $entradaExistente[0]['cantidad'];
+
+            // Calcular la nueva cantidad
+            
+
+
+            $nuevaCantidad = $cantidad;
+
+            if ($nuevaCantidad <= 0) {
+                // Si la cantidad resultante es menor o igual a 0, eliminar la entrada del carrito
+                $sqlEliminarCarritoManzana = "DELETE FROM carrito_manzana WHERE id = ?";
+                $this->DB->Ejecutar_Seguro_UTF8($sqlEliminarCarritoManzana, [$entradaId]);
+            } else {
+                // Si la cantidad resultante es mayor que 0, actualizar la cantidad en la entrada del carrito
+                $sqlActualizarCarritoManzana = "UPDATE carrito_manzana SET cantidad = ? WHERE id = ?";
+                $this->DB->Ejecutar_Seguro_UTF8($sqlActualizarCarritoManzana, [$nuevaCantidad, $entradaId]);
+            }
+        }
+
+        // Obtener el precio de la manzana desde la base de datos
+        $sqlPrecioManzana = "SELECT precio FROM manzana WHERE id = ?";
+        $precioManzana = $this->DB->Buscar_Seguro_UTF8($sqlPrecioManzana, [$idManzana]);
+
+        if (!empty($precioManzana)) {
+            $precioManzana = $precioManzana[0]['precio'];
+
+            // Calcular el costo de esta manzana y actualizar el total del carrito
+            $costoManzana = $cantidad * $precioManzana;
+            $totalCarrito = $costoManzana;
+
+            // Actualizar el total del carrito en la tabla 'carrito'
+            $sqlActualizarCarrito = "UPDATE carrito SET total = ? WHERE id = ?";
+            $this->DB->Ejecutar_Seguro_UTF8($sqlActualizarCarrito, [$totalCarrito, $carritoId]);
+        } else {
+            return ['error' => "No se pudo obtener el precio de la manzana con ID $idManzana."];
+        }
+
+        return ['message' => "Manzana modificada en el carrito con éxito"];
+    } catch (Exception $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
+
    
 
 
