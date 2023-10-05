@@ -67,7 +67,7 @@ public function verificarUsuario(string $usuario, string $contrasenia)
     {
         $sql = "SELECT idRol, idUsuario FROM usuario WHERE usuario =? AND contrasenia = ?";
         $statement = $this->DB->Buscar_Seguro($sql, [$usuario, $contrasenia]);
-        if (count($statement) > 0) {
+        if (is_array($statement) && count($statement) > 0) {
             return $statement[0];
         } 
     }
