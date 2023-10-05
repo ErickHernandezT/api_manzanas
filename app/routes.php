@@ -187,6 +187,12 @@ return function (App $app) {
     $app->group('/Carrito', function (Group $group) {
         //ruta para agregar productos al carrito
         $group->post('/agregarCarrito', carritoController::class . ':validarAgregarCarrito');
+        //ruta para mostrar el carrito
+        $group->post('/mostrarCarrito', carritoController::class . ':validarMostrarCarrito');
+        //ruta para eliminar todo el carrito
+        $group->post('/eliminarCarrito', carritoController::class . ':validarEliminarCarrito');
+        //ruta para modificar cantidades de carrito
+        $group->post('/modificarCarrito', carritoController::class . ':validarModificarCarrito');
     });
 
 

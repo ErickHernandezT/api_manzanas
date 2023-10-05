@@ -39,15 +39,9 @@ class carritoFunctions
         c.idUsuario = ?; -- Cambia el 1 por el ID del carrito que deseas consultar
     ";
 
-        $statement = $this->DB->Buscar($sql, [$idUsuario]);
+        $statement = $this->DB->Buscar_Seguro_UTF8($sql, [$idUsuario]);
 
         if (is_array($statement) && count($statement) > 0) {
-            // Codifica la imagen en formato base64 y agrégala al resultado
-            foreach ($statement as &$row) {
-                if ($row['foto'] !== null) {
-                    $row['foto'] = base64_encode($row['foto']);
-                }
-            }
             return $statement;
         } else {
             return ['message' =>  "Error al mostrar el carrito"];
