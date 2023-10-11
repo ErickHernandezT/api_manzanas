@@ -25,7 +25,7 @@ class manzanaFunctions
     public function listaManzanas()
     {
         // Selecciona la columna 'foto' en la consulta SQL
-        $sql2 = "SELECT id, nombre, nivelMadurez, descripcion, estatus, precio, stock, foto FROM manzana";
+        $sql2 = "SELECT id, nombre, nivelMadurez, descripcion, estatus, precioKilo, precioCaja, precioTonelada, stock, foto FROM manzana";
 
         $statement = $this->DB->Buscar($sql2, []);
 
@@ -41,7 +41,7 @@ class manzanaFunctions
     public function buscarManzanaPorId(int $id)
     {
         // Query SQL para buscar una manzana por su ID
-        $sql = "SELECT id, nombre, foto, nivelMadurez, descripcion, estatus, precio, stock FROM manzana WHERE id = ?";
+        $sql = "SELECT id, nombre, foto, nivelMadurez, descripcion, estatus, precioKilo, precioCaja, precioTonelada, stock FROM manzana WHERE id = ?";
 
         // Ejecutamos la consulta
         $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
@@ -58,25 +58,25 @@ class manzanaFunctions
 
 
 
-    public function ingresarManzanas(String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precio, Int $stock)
+    public function ingresarManzanas(String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock)
     {
         // Se usa left join para que también muestre los productos que no tengan
-        $sql2 = "INSERT INTO manzana (nombre, foto, nivelMadurez, descripcion, estatus, precio, stock) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql2 = "INSERT INTO manzana (nombre, foto, nivelMadurez, descripcion, estatus, precioKilo, precioCaja, precioTonelada, stock) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precio, $stock]);
+        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precioKilo, $precioCaja, $precioTonelada, $stock]);
         return ($statement == '200') ? true : false;
     }
 
 
 
 
-    public function actualizarManzanas(int $id, String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precio, Int $stock)
+    public function actualizarManzanas(int $id, String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock)
     {
         // Query SQL para actualizar los datos en la tabla manzana
-        $sql = "UPDATE manzana SET nombre = ?, foto = ?, nivelMadurez = ?, descripcion = ?, estatus = ?, precio = ?, stock = ? WHERE id = ?";
+        $sql = "UPDATE manzana SET nombre = ?, foto = ?, nivelMadurez = ?, descripcion = ?, estatus = ?, precioKilo = ?, precioCaja = ?, precioTonelada = ?, stock = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
-        $parametros = [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precio, $stock, $id];
+        $parametros = [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precioKilo, $precioCaja, $precioTonelada, $stock, $id];
 
         // Ejecutamos la consulta
         $resultado = $this->DB->Ejecutar_Seguro_UTF8($sql, $parametros);

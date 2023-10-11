@@ -25,16 +25,20 @@ class manzanaController extends generalController
         $descripcion = (isset($params['descripcion'])) ? strip_tags($params['descripcion']) : '';
         $foto = (isset($params['foto'])) ? strip_tags($params['foto']) : '';
         $estatus = (isset($params['estatus'])) ? (int)strip_tags($params['estatus']) : 0;
-        $precio = (isset($params['precio'])) ? (float)strip_tags($params['precio']) : 0.0;
+        $precioKilo = (isset($params['precioKilo'])) ? (float)strip_tags($params['precioKilo']) : 0.0;
+        $precioCaja = (isset($params['precioCaja'])) ? (float)strip_tags($params['precioCaja']) : 0.0;
+        $precioTonelada = (isset($params['precioTonelada'])) ? (float)strip_tags($params['precioTonelada']) : 0.0;
         $stock = (isset($params['stock'])) ? (int)strip_tags($params['stock']) : 0;
        
     
-        if ($nombre != '' && $nivelMadurez != '' && $descripcion != '' && $foto!= '' && $estatus > 0 && $precio > 0 && $stock > 0 && $descripcion != '') {
+        if ($nombre != '' && $nivelMadurez != '' && $descripcion != '' && $foto!= '' && $estatus > 0 && $precioKilo > 0 
+        && $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 ) {
             
     
             
                 // Verifica que la foto se haya cargado correctamente
-                $mensaje = $this->funciones->ingresarManzanas($nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precio, $stock);
+                $mensaje = $this->funciones->ingresarManzanas($nombre, $foto, $nivelMadurez, $descripcion, $estatus, 
+                $precioKilo, $precioCaja, $precioTonelada, $stock);
     
                 if ($mensaje) {
                     $code = 200;
@@ -83,15 +87,19 @@ class manzanaController extends generalController
         $descripcion = (isset($params['descripcion'])) ? strip_tags($params['descripcion']) : '';
         $foto = (isset($params['foto'])) ? strip_tags($params['foto']) : '';
         $estatus = (isset($params['estatus'])) ? (int)strip_tags($params['estatus']) : 0;
-        $precio = (isset($params['precio'])) ? (float)strip_tags($params['precio']) : 0.0;
+        $precioKilo = (isset($params['precioKilo'])) ? (float)strip_tags($params['precioKilo']) : 0.0;
+        $precioCaja = (isset($params['precioCaja'])) ? (float)strip_tags($params['precioCaja']) : 0.0;
+        $precioTonelada = (isset($params['precioTonelada'])) ? (float)strip_tags($params['precioTonelada']) : 0.0;
         $stock = (isset($params['stock'])) ? (int)strip_tags($params['stock']) : 0;
     
-        if ($id > 0 && $nombre != '' && $nivelMadurez != '' && $descripcion != '' && $foto!= '' && $estatus > 0 && $precio > 0 && $stock > 0 && $descripcion != '') {
+        if ($id > 0 && $nombre != '' && $nivelMadurez != '' && $descripcion != '' && $foto!= '' && $estatus > 0 && $precioKilo > 0 &&
+        $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 ) {
             
     
             
                 // Verifica que la foto se haya cargado correctamente
-                $mensaje = $this->funciones->actualizarManzanas($id, $nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precio, $stock);
+                $mensaje = $this->funciones->actualizarManzanas($id, $nombre, $foto, $nivelMadurez, $descripcion, $estatus, 
+                $precioKilo, $precioCaja, $precioTonelada, $stock);
     
                 if ($mensaje) {
                     $code = 200;
