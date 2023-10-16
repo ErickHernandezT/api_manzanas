@@ -15,6 +15,7 @@ use App\Application\Actions\Login\loginController;
 use App\Application\Actions\Manzana\manzanaController;
 use App\Application\Actions\puntoVenta\puntoVentaController;
 use App\Application\Actions\Evento\eventoController;
+use App\Application\Actions\Pedido\pedidoController;
 
 function CargarImagenBase64($directorio_destino, $nombre, $tmp_name)
 {
@@ -117,6 +118,9 @@ return function (App $app) {
         $group->post('/listaPuntosVenta', puntoVentaController::class . ':validarListaPuntosVenta');
         //ruta para buscar un punto de venta
         $group->post('/buscarPuntoVenta', puntoVentaController::class . ':validarBuscarPuntoVentaPorId');
+        //ruta para hacer un pedido
+        $group->post('/realizarPedido', pedidoController::class . ':validarHacerPedido');
+
          
     });
 
@@ -242,6 +246,9 @@ return function (App $app) {
         //ruta para eliminar un punto de venta
         $group->post('/eliminar', puntoVentaController::class . ':validarEliminarPuntoVenta');
     });
+
+
+    
 
 
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
