@@ -77,7 +77,7 @@ class pedidoFunctions
     //     }
     // }
 
-    public function hacerPedido(int $nombreCliente, int $estadoCliente, int $ciudadCliente, int $correoCliente, int $telefonoCliente, array $manzanas)
+    public function hacerPedido(String $nombreCliente, String $estadoCliente, String $ciudadCliente, String $correoCliente, String $telefonoCliente, array $manzanas)
     {
         try {
             $totalPedido = 0; // Inicializa el costo total del pedido
@@ -85,13 +85,17 @@ class pedidoFunctions
             // Crear un nuevo pedido
             $fechaOrdenado = date("Y-m-d");
 
-            // Insertar el pedido y obtener el ID insertado
+            //Insertar el pedido y obtener el ID insertado
             $sqlCrearPedido = "INSERT INTO pedido (fechaOrdenado, total, nombreCliente, estadoCliente, ciudadCliente, correoCliente, telefonoCliente) 
-            VALUES (?, ?, ?, ?, ?, ?, ?); SELECT LAST_INSERT_ID() as id;";
-            $pedidoIdQuery = $this->DB->Buscar_Seguro_UTF8($sqlCrearPedido, [
+            VALUES (?, ?, ?, ?, ?, ?, ?);";
+            $this->DB->Ejecutar_Seguro_UTF8($sqlCrearPedido, [
                 $fechaOrdenado, 0, $nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente
             ]);
-            $pedidoId = $pedidoIdQuery[0]['id'];
+
+
+            
+          
+            $pedidoId = $this->DB->getUltimoIdInsertado();
 
             // Procesar cada manzana en el pedido
             foreach ($manzanas as $manzana) {
@@ -99,11 +103,11 @@ class pedidoFunctions
                 $cantidad = $manzana['cantidad'];
 
                 // Verificar si la manzana con el idManzana existe en la base de datos
-                $sqlManzanaExistente = "SELECT precioKilo FROM manzana WHERE id = ?";
+                $sqlManzanaExistente = "SELECT precioTonelada FROM manzana WHERE id = ?";
                 $manzanaExistente = $this->DB->Buscar_Seguro_UTF8($sqlManzanaExistente, [$idManzana]);
 
                 if (empty($manzanaExistente)) {
-                    return ['error' => "La manzana con ID $idManzana no existe en la base de datos."];
+                    return ['error' => "una de sus manzanas no se encuentra."];
                 }
 
                 // Calcular el costo de esta manzana y agregarlo al costo total del pedido
@@ -198,12 +202,11 @@ class pedidoFunctions
             $telefonoCliente = $pedido[0]['telefonoCliente'];
 
             $sqlCrearVenta = "INSERT INTO venta (fechaLiberado, total, nombreCliente, estadoCliente, ciudadCliente, correoCliente, telefonoCliente) 
-            VALUES (?, ?, ?, ?, ?, ?, ?); SELECT LAST_INSERT_ID() as id;";
-            $ventaIdQuery = $this->DB->Buscar_Seguro_UTF8($sqlCrearVenta, [
+            VALUES (?, ?, ?, ?, ?, ?, ?);";
+            $ventaIdQuery = $this->DB->Ejecutar_Seguro_UTF8($sqlCrearVenta, [
                 $fechaLiberado, $total, $nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente
             ]);
-            $ventaId = $ventaIdQuery[0]['id'];
-
+            $ventaId =  $this->DB->getUltimoIdInsertado();
             // Transferir los registros de pedido_manzana a venta_manzana
             $sqlTransferirManzanas = "INSERT INTO venta_manzana (idVenta, idManzana, cantidad) 
             SELECT ?, idManzana, cantidad FROM pedido_manzana WHERE idPedido = ?";
