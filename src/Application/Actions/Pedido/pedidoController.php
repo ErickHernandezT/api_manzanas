@@ -88,4 +88,35 @@ public function validarListaPedidos($request, $response, $args)
 
 
 
+public function validarLiberarPedido($request, $response, $args)
+    {
+        $params = (array)$request->getParsedBody();
+
+        $idPedido = (isset($params['idPedido'])) ? (int)strip_tags($params['idPedido']) : 0;
+
+        $mensaje = ['message' => ''];
+
+        if ($idPedido > 0 ) {
+          
+
+                $mensaje = $this->funciones->liberarPedido($idPedido);
+
+                if ($mensaje) {
+                    $code = 200;
+                } else {
+                    $code = 404;
+                }
+
+        } else {
+            $code = 400;
+            $mensaje = ['message' => 'Datos incorrectos o vacíos'];
+        }
+
+        // Retornamos la respuesta
+        return $this->response($code, [$mensaje], $response);
+    }
+
+
+
+
 }

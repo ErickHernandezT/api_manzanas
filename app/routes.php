@@ -16,6 +16,7 @@ use App\Application\Actions\Manzana\manzanaController;
 use App\Application\Actions\puntoVenta\puntoVentaController;
 use App\Application\Actions\Evento\eventoController;
 use App\Application\Actions\Pedido\pedidoController;
+use App\Application\Actions\Venta\ventaController;
 
 function CargarImagenBase64($directorio_destino, $nombre, $tmp_name)
 {
@@ -238,8 +239,17 @@ return function (App $app) {
 
     //Grupo para Pedidos
     $app->group('/Pedidos', function (Group $group) {
-        //ruta para ingresar una actividad
+        //ruta para listar pedidos
         $group->post('/lista', pedidoController::class . ':validarListaPedidos');
+        //ruta para liberar un pedido y subirlo como venta
+        $group->post('/liberar', pedidoController::class . ':validarLiberarPedido');
+    });
+
+
+    //Grupo para Ventas
+    $app->group('/Ventas', function (Group $group) {
+        //ruta para listar ventas
+        $group->post('/lista', ventaController::class . ':validarListaVentas');
     });
 
 

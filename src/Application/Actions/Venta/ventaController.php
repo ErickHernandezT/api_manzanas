@@ -19,5 +19,24 @@ class ventaController extends generalController
 
 
     
+    public function validarListaVentas($request, $response, $args)
+{
+    
+
+        $mensaje = $this->funciones->listaVentas();
+
+        if ($mensaje) {
+            $code = 200;
+        } else {
+            $code = 404;
+            $mensaje = ['message' => 'Error al cargar los pedidos'];
+        }
+   
+
+    // Retornamos la respuesta
+    return $this->response($code, $mensaje, $response);
+}
+
+
 
 }
