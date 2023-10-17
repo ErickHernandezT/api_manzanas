@@ -40,43 +40,6 @@ class pedidoFunctions
     }
 
 
-
-    //     public function hacerPedido(int $nombreCliente, int $estadoCliente, int $ciudadCliente, int $correoCliente,
-    //     int $telefonoCliente, int $idManzana, int $cantidad)
-    // {
-    //     try {
-    //         // Verificar si la manzana con el idManzana existe en la base de datos
-    //         $sqlManzanaExistente = "SELECT precioKilo FROM manzana WHERE id = ?";
-    //         $manzanaExistente = $this->DB->Buscar_Seguro_UTF8($sqlManzanaExistente, [$idManzana]);
-
-    //         if (empty($manzanaExistente)) {
-    //             return ['error' => "La manzana con ID $idManzana no existe en la base de datos."];
-    //         }
-
-    //         // Calcular el costo de esta manzana
-    //         $precioKilo = $manzanaExistente[0]['precioKilo'];
-    //         $costoManzana = $cantidad * $precioKilo;
-
-    //         // Crear un nuevo pedido
-    //         $fechaOrdenado = date("Y-m-d");
-
-
-    //         $sqlCrearPedido = "INSERT INTO pedido (fechaOrdenado, total, nombreCliente, estadoCliente, ciudadCliente, correoCliente, telefonoCliente) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    //         $this->DB->Ejecutar_Seguro_UTF8($sqlCrearPedido, [$fechaOrdenado, $costoManzana, $nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente]);
-
-    //         // Obtener el ID del pedido recién creado
-    //         $pedidoId = $this->DB->getLastInsertId();
-
-    //         // Agregar la manzana al pedido
-    //         $sqlAgregarManzanaPedido = "INSERT INTO pedido_manzana (idPedido, idManzana, cantidad) VALUES (?, ?, ?)";
-    //         $this->DB->Ejecutar_Seguro_UTF8($sqlAgregarManzanaPedido, [$pedidoId, $idManzana, $cantidad]);
-
-    //         return ['message' => "Pedido realizado con éxito"];
-    //     } catch (Exception $e) {
-    //         return ['error' => $e->getMessage()];
-    //     }
-    // }
-
     public function hacerPedido(String $nombreCliente, String $estadoCliente, String $ciudadCliente, String $correoCliente, String $telefonoCliente, array $manzanas)
     {
         try {
@@ -189,7 +152,7 @@ class pedidoFunctions
             $pedido = $this->DB->Buscar_Seguro_UTF8($sqlObtenerPedido, [$idPedido]);
 
             if (empty($pedido)) {
-                return ['error' => "El pedido con ID $idPedido no existe en la base de datos."];
+                return ['error' => "Lo lamentamos su pedido no se encuentra"];
             }
 
             // Crear una nueva venta con los datos del pedido y obtener el ID insertado
