@@ -61,7 +61,7 @@ class manzanaFunctions
     public function ingresarManzanas(String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock)
     {
         // Se usa left join para que también muestre los productos que no tengan
-        $sql2 = "INSERT INTO manzana (nombre, foto, nivelMadurez, descripcion, estatus, precioKilo, precioCaja, precioTonelada, stock) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql2 = "INSERT INTO manzana (nombre, foto, nivelMadurez, descripcion, estatus, precioKilo, precioCaja, precioTonelada, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precioKilo, $precioCaja, $precioTonelada, $stock]);
         return ($statement == '200') ? true : false;
