@@ -110,8 +110,8 @@ public function hacerPedido(int $nombreCliente, int $estadoCliente, int $ciudadC
             }
 
             // Calcular el costo de esta manzana y agregarlo al costo total del pedido
-            $precioKilo = $manzanaExistente[0]['precioKilo'];
-            $costoManzana = $cantidad * $precioKilo;
+            $precioTonelada = $manzanaExistente[0]['precioTonelada'];
+            $costoManzana = $cantidad * $precioTonelada;
             $totalPedido += $costoManzana;
 
             // Agregar la manzana al pedido
@@ -130,7 +130,7 @@ public function hacerPedido(int $nombreCliente, int $estadoCliente, int $ciudadC
 }
 
 
-public function obtenerPedidosConManzanas()
+public function listaPedidos()
 {
     try {
         $sql = "SELECT p.id AS pedido_id, p.fechaOrdenado, p.total, p.nombreCliente, p.estadoCliente, p.ciudadCliente, p.correoCliente, p.telefonoCliente,
@@ -138,7 +138,7 @@ public function obtenerPedidosConManzanas()
             FROM pedido AS p
             LEFT JOIN pedido_manzana AS pm ON p.id = pm.idPedido
             LEFT JOIN manzana AS m ON pm.idManzana = m.id
-            ORDER BY p.id";
+            ORDER BY p.fechaOrdenado";
 
         $result = $this->DB->Buscar_Seguro_UTF8($sql, []);
 

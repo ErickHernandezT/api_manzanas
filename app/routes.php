@@ -89,8 +89,8 @@ return function (App $app) {
 
     //ruta para loguearse
     $app->post('/login', loginController::class . ':validarLogin');
-    //ruta para registrarun usuario
-    $app->post('/registrarUsuario', loginController::class . ':validarCrearUsario');
+    // //ruta para registrarun usuario
+    // $app->post('/registrarUsuario', loginController::class . ':validarCrearUsario');
     //ruta para registrarun productor
     $app->post('/registrarProductor', loginController::class . ':validarCrearProductor');
 
@@ -120,7 +120,7 @@ return function (App $app) {
         $group->post('/buscarPuntoVenta', puntoVentaController::class . ':validarBuscarPuntoVentaPorId');
         //ruta para hacer un pedido
         $group->post('/realizarPedido', pedidoController::class . ':validarHacerPedido');
-
+        
          
     });
 
@@ -236,6 +236,12 @@ return function (App $app) {
         $group->post('/eliminar', manzanaController::class . ':validarEliminarManzana');
     });
 
+    //Grupo para Pedidos
+    $app->group('/Pedidos', function (Group $group) {
+        //ruta para ingresar una actividad
+        $group->post('/lista', pedidoController::class . ':validarListaPedidos');
+    });
+
 
     //Grupo para puntos de venta
     $app->group('/PuntoVenta', function (Group $group) {
@@ -246,6 +252,8 @@ return function (App $app) {
         //ruta para eliminar un punto de venta
         $group->post('/eliminar', puntoVentaController::class . ':validarEliminarPuntoVenta');
     });
+
+
 
 
     

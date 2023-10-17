@@ -68,4 +68,24 @@ class pedidoController extends generalController
 }
 
 
+public function validarListaPedidos($request, $response, $args)
+{
+    
+
+        $mensaje = $this->funciones->listaPedidos();
+
+        if ($mensaje) {
+            $code = 200;
+        } else {
+            $code = 404;
+            $mensaje = ['message' => 'Error al cargar los pedidos'];
+        }
+   
+
+    // Retornamos la respuesta
+    return $this->response($code, $mensaje, $response);
+}
+
+
+
 }
