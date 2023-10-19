@@ -50,7 +50,7 @@ class loginController extends generalController
                 $key = 'a84125e55c207450dba07c6cb3e7b999';
                 $payload = [
                     'usuario' => $usuario,
-                    'exp' => time() + 1800 //Media hora valida para el token antes de que expire
+                    'exp' => time() + 7 * 24 * 60 * 60 // Una semana en segundos
                     // Puedes agregar más datos al payload si lo deseas
                 ];
                 $token = JWT::encode($payload, $key);
@@ -72,13 +72,6 @@ class loginController extends generalController
 
 
 
-    //Mostar página de registro de usuario
-    public function crearUsario($request, $response, $args)
-    {
-
-        $response->getBody()->write('Aqui va la página de creación de un nuevo usuario ');
-        return $response;
-    }
 
 
     // //Se validan los datos para la creación de un usuario

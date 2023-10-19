@@ -21,15 +21,18 @@ class ventaController extends generalController
     
     public function validarListaVentas($request, $response, $args)
 {
-    
+    $params = (array)$request->getParsedBody();
 
-        $mensaje = $this->funciones->listaVentas();
+        $fechaInicial = (isset($params['fechaInicial'])) ? strip_tags($params['fechaInicial']) : '';
+        $fechaFinal = (isset($params['fechaFinal'])) ? strip_tags($params['fechaFinal']) : '';
+
+        $mensaje = $this->funciones->listaVentas($fechaInicial, $fechaFinal);
 
         if ($mensaje) {
             $code = 200;
         } else {
             $code = 404;
-            $mensaje = ['message' => 'Error al cargar los pedidos'];
+            $mensaje = ['message' => 'Error al cargar las ventas'];
         }
    
 
