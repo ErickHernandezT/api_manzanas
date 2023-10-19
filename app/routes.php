@@ -241,8 +241,13 @@ return function (App $app) {
     $app->group('/Pedidos', function (Group $group) {
         //ruta para listar pedidos
         $group->post('/lista', pedidoController::class . ':validarListaPedidos');
+        //ruta para actualizar un pedido
+        $group->post('/actualizar', pedidoController::class . ':validarActualizarPedido');
+        //ruta para eliminar un pedido
+        $group->post('/eliminar', pedidoController::class . ':validarEliminarPedido');
         //ruta para liberar un pedido y subirlo como venta
         $group->post('/liberar', pedidoController::class . ':validarLiberarPedido');
+        
     });
 
 

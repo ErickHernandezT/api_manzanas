@@ -19,8 +19,7 @@ class pedidoController extends generalController
 
 
 
-    public function validarHacerPedido($request, $response, $args)
-{
+    public function validarHacerPedido($request, $response, $args){
     $params = (array)$request->getParsedBody();
 
     $nombreCliente = (isset($params['nombreCliente'])) ? strip_tags($params['nombreCliente']) : '';
@@ -85,6 +84,91 @@ public function validarListaPedidos($request, $response, $args)
     // Retornamos la respuesta
     return $this->response($code, $mensaje, $response);
 }
+
+
+//Controlador para actualizar el pedido
+
+public function validarActualizarPedido($request, $response, $args){
+    $params = (array)$request->getParsedBody();
+
+    $idPedido = (isset($params['idPedido'])) ? (int)strip_tags($params['idPedido']) : 0;
+    $nombreCliente = (isset($params['nombreCliente'])) ? strip_tags($params['nombreCliente']) : '';
+    $estadoCliente = (isset($params['estadoCliente'])) ? strip_tags($params['estadoCliente']) : '';
+    $ciudadCliente = (isset($params['ciudadCliente'])) ? strip_tags($params['ciudadCliente']) : '';
+    $correoCliente = (isset($params['correoCliente'])) ? strip_tags($params['correoCliente']) : '';
+    $telefonoCliente = (isset($params['telefonoCliente'])) ? strip_tags($params['telefonoCliente']) : '';
+
+    $manzanas = (isset($params['manzanas'])) ? $params['manzanas'] : [];
+
+    if ($idPedido > 0 && $nombreCliente != '' && $estadoCliente != '' && $ciudadCliente != '' && $correoCliente != '' && $telefonoCliente != '' && !empty($manzanas)) {
+        $manzanasArray = [];
+
+        foreach ($manzanas as $manzana) {
+            $idManzana = (isset($manzana['idManzana'])) ? (int)strip_tags($manzana['idManzana']) : 0;
+            $cantidad = (isset($manzana['cantidad'])) ? (int)strip_tags($manzana['cantidad']) : 0;
+
+            if ($idManzana > 0 && $cantidad > 0) {
+                $manzanasArray[] = [
+                    'idManzana' => $idManzana,
+                    'cantidad' => $cantidad
+                ];
+            }
+        }
+
+        if (!empty($manzanasArray)) {
+            // Llama a la función para hacer el pedido
+            $mensaje = $this->funciones->actualizarPedido($idPedido, $nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente, $manzanasArray);
+
+            if ($mensaje && isset($mensaje['message'])) {
+                $code = 200;
+            } else {
+                $code = 404;
+            }
+        } else {
+            $code = 400;
+            $mensaje = ['message' => 'Datos incorrectos o vacíos en las manzanas'];
+        }
+    } else {
+        $code = 400;
+        $mensaje = ['message' => 'Datos incorrectos o vacíos en el pedido'];
+    }
+
+    return $this->response($code, $mensaje, $response);
+}
+
+
+public function validarEliminarPedido($request, $response, $args)
+    {
+        $params = (array)$request->getParsedBody();
+
+        $idPedido = (isset($params['idPedido'])) ? (int)strip_tags($params['idPedido']) : 0;
+
+        $mensaje = ['message' => ''];
+
+        if ($idPedido > 0 ) {
+          
+
+                $mensaje = $this->funciones->eliminarPedido($idPedido);
+
+                if ($mensaje) {
+                    $code = 200;
+                } else {
+                    $code = 404;
+                }
+
+        } else {
+            $code = 400;
+            $mensaje = ['message' => 'Datos incorrectos o vacíos'];
+        }
+
+        // Retornamos la respuesta
+        return $this->response($code, [$mensaje], $response);
+    }
+
+
+
+
+
 
 
 
