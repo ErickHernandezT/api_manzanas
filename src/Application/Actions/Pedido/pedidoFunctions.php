@@ -39,8 +39,8 @@ class pedidoFunctions
             ]);
 
 
-            
-          
+
+
             $pedidoId = $this->DB->getUltimoIdInsertado();
 
             // Procesar cada manzana en el pedido
@@ -76,59 +76,111 @@ class pedidoFunctions
         }
     }
 
-    
+
 
     //Función para listar todos los pedidos
+    // public function listaPedidos()
+    // {
+    //     try {
+    //         $sql = "SELECT p.id AS pedido_id, p.fechaOrdenado, p.total, p.nombreCliente, p.estadoCliente, p.ciudadCliente, p.correoCliente, p.telefonoCliente,
+    //             m.id AS manzana_id, m.nombre AS manzana_nombre, pm.cantidad AS cantidad_manzana, pm.subtotal AS subtotal_manzana
+    //         FROM pedido AS p
+    //         LEFT JOIN pedido_manzana AS pm ON p.id = pm.idPedido
+    //         LEFT JOIN manzana AS m ON pm.idManzana = m.id
+    //         ORDER BY p.fechaOrdenado";
+
+    //         $result = $this->DB->Buscar($sql, []);
+
+
+    //         if (is_array($result) && count($result) > 0) {
+    //             $pedidos = [];
+    //         $currentPedido = null;
+
+    //         foreach ($result as $row) {
+    //             $pedidoId = $row['pedido_id'];
+
+    //             if ($currentPedido === null || $pedidoId !== $currentPedido['id']) {
+    //                 // Nuevo pedido
+    //                 $currentPedido = [
+    //                     'id' => $pedidoId,
+    //                     'fechaOrdenado' => $row['fechaOrdenado'],
+    //                     'total' => $row['total'],
+    //                     'nombreCliente' => $row['nombreCliente'],
+    //                     'estadoCliente' => $row['estadoCliente'],
+    //                     'ciudadCliente' => $row['ciudadCliente'],
+    //                     'correoCliente' => $row['correoCliente'],
+    //                     'telefonoCliente' => $row['telefonoCliente'],
+    //                     'manzanas' => [],
+    //                 ];
+    //                 $pedidos[] = $currentPedido;
+    //             }
+
+    //             // Agregar la manzana y la cantidad al pedido actual
+    //             $pedidos['manzanas'][] = [
+    //                 'id' => $row['manzana_id'],
+    //                 'nombre' => $row['manzana_nombre'],
+    //                 'cantidad' => $row['cantidad_manzana'],
+    //                 'subtotal' => $row['subtotal_manzana'],
+    //             ];
+    //         }
+
+    //         return $pedidos;
+    //         } else {
+    //             return ['message' => 'No se encontró ningun pedido'];
+    //         }
+
+    //     } catch (Exception $e) {
+    //         return ['error' => $e->getMessage()];
+    //     }
+    // }
+
     public function listaPedidos()
     {
         try {
             $sql = "SELECT p.id AS pedido_id, p.fechaOrdenado, p.total, p.nombreCliente, p.estadoCliente, p.ciudadCliente, p.correoCliente, p.telefonoCliente,
-                m.id AS manzana_id, m.nombre AS manzana_nombre, pm.cantidad AS cantidad_manzana, pm.subtotal AS subtotal_manzana
-            FROM pedido AS p
-            LEFT JOIN pedido_manzana AS pm ON p.id = pm.idPedido
-            LEFT JOIN manzana AS m ON pm.idManzana = m.id
-            ORDER BY p.fechaOrdenado";
+            m.id AS manzana_id, m.nombre AS manzana_nombre, pm.cantidad AS cantidad_manzana, pm.subtotal AS subtotal_manzana
+        FROM pedido AS p
+        LEFT JOIN pedido_manzana AS pm ON p.id = pm.idPedido
+        LEFT JOIN manzana AS m ON pm.idManzana = m.id
+        ORDER BY p.fechaOrdenado";
 
             $result = $this->DB->Buscar($sql, []);
-            
 
             if (is_array($result) && count($result) > 0) {
+
                 $pedidos = [];
-            $currentPedido = null;
 
-            foreach ($result as $row) {
-                $pedidoId = $row['pedido_id'];
+                foreach ($result as $row) {
+                    $pedidoId = $row['pedido_id'];
 
-                if ($currentPedido === null || $pedidoId !== $currentPedido['id']) {
-                    // Nuevo pedido
-                    $currentPedido = [
-                        'id' => $pedidoId,
-                        'fechaOrdenado' => $row['fechaOrdenado'],
-                        'total' => $row['total'],
-                        'nombreCliente' => $row['nombreCliente'],
-                        'estadoCliente' => $row['estadoCliente'],
-                        'ciudadCliente' => $row['ciudadCliente'],
-                        'correoCliente' => $row['correoCliente'],
-                        'telefonoCliente' => $row['telefonoCliente'],
-                        'manzanas' => [],
+                    // Buscar el pedido actual en el arreglo de pedidos o crear uno nuevo
+                    if (!isset($pedidos[$pedidoId])) {
+                        $pedidos[$pedidoId] = [
+                            'id' => $pedidoId,
+                            'fechaOrdenado' => $row['fechaOrdenado'],
+                            'total' => $row['total'],
+                            'nombreCliente' => $row['nombreCliente'],
+                            'estadoCliente' => $row['estadoCliente'],
+                            'ciudadCliente' => $row['ciudadCliente'],
+                            'correoCliente' => $row['correoCliente'],
+                            'telefonoCliente' => $row['telefonoCliente'],
+                            'manzanas' => [],
+                        ];
+                    }
+
+                    // Agregar la manzana y la cantidad al pedido actual
+                    $pedidos[$pedidoId]['manzanas'][] = [
+                        'id' => $row['manzana_id'],
+                        'nombre' => $row['manzana_nombre'],
+                        'cantidad' => $row['cantidad_manzana'],
+                        'subtotal' => $row['subtotal_manzana'],
                     ];
-                    $pedidos[] = $currentPedido;
                 }
 
-                // Agregar la manzana y la cantidad al pedido actual
-                $currentPedido['manzanas'][] = [
-                    'id' => $row['manzana_id'],
-                    'nombre' => $row['manzana_nombre'],
-                    'cantidad' => $row['cantidad_manzana'],
-                    'subtotal' => $row['subtotal_manzana'],
-                ];
-            }
-
-            return $pedidos;
+                return array_values($pedidos);  // Reindexar el arreglo para obtener una lista numérica
             } else {
                 return ['message' => 'No se encontró ningun pedido'];
             }
-           
         } catch (Exception $e) {
             return ['error' => $e->getMessage()];
         }
@@ -136,62 +188,65 @@ class pedidoFunctions
 
 
 
+
     //Función para actualizar el pedido
     public function actualizarPedido(int $idPedido, String $nombreCliente, String $estadoCliente, String $ciudadCliente, String $correoCliente, String $telefonoCliente, array $manzanas)
-{
-    try {
-        $totalPedido = 0; // Inicializa el costo total del pedido
+    {
+        try {
+            $totalPedido = 0; // Inicializa el costo total del pedido
 
-        // Verificar si el pedido con el idPedido existe en la base de datos
-        $sqlPedidoExistente = "SELECT * FROM pedido WHERE id = ?";
-        $pedidoExistente = $this->DB->Buscar_Seguro_UTF8($sqlPedidoExistente, [$idPedido]);
+            // Verificar si el pedido con el idPedido existe en la base de datos
+            $sqlPedidoExistente = "SELECT * FROM pedido WHERE id = ?";
+            $pedidoExistente = $this->DB->Buscar_Seguro_UTF8($sqlPedidoExistente, [$idPedido]);
 
-        if (empty($pedidoExistente)) {
-            return ['error' => "Su pedido no se ha encontrado"];
-        }
-
-        // Eliminar las manzanas del pedido existente
-        $sqlEliminarManzanasPedido = "DELETE FROM pedido_manzana WHERE idPedido = ?";
-        $this->DB->Ejecutar_Seguro_UTF8($sqlEliminarManzanasPedido, [$idPedido]);
-
-        // Procesar cada manzana en el pedido actualizado
-        foreach ($manzanas as $manzana) {
-            $idManzana = $manzana['idManzana'];
-            $cantidad = $manzana['cantidad'];
-
-            // Verificar si la manzana con el idManzana existe en la base de datos
-            $sqlManzanaExistente = "SELECT precioTonelada FROM manzana WHERE id = ?";
-            $manzanaExistente = $this->DB->Buscar_Seguro_UTF8($sqlManzanaExistente, [$idManzana]);
-
-            if (empty($manzanaExistente)) {
-                return ['error' => "Una de las manzanas no se encuentra."];
+            if (empty($pedidoExistente)) {
+                return ['error' => "Su pedido no se ha encontrado"];
             }
 
-            // Calcular el costo de esta manzana y agregarlo al costo total del pedido
-            $precioTonelada = $manzanaExistente[0]['precioTonelada'];
-            $costoManzana = $cantidad * $precioTonelada;
-            $totalPedido += $costoManzana;
+            // Eliminar las manzanas del pedido existente
+            $sqlEliminarManzanasPedido = "DELETE FROM pedido_manzana WHERE idPedido = ?";
+            $this->DB->Ejecutar_Seguro_UTF8($sqlEliminarManzanasPedido, [$idPedido]);
 
-            // Agregar la manzana al pedido
-            $sqlAgregarManzanaPedido = "INSERT INTO pedido_manzana (idPedido, idManzana, cantidad, subtotal) VALUES (?, ?, ?, ?)";
-            $this->DB->Ejecutar_Seguro_UTF8($sqlAgregarManzanaPedido, [$idPedido, $idManzana, $cantidad, $costoManzana]);
-        }
+            // Procesar cada manzana en el pedido actualizado
+            foreach ($manzanas as $manzana) {
+                $idManzana = $manzana['idManzana'];
+                $cantidad = $manzana['cantidad'];
 
-        // Actualizar el costo total del pedido en la tabla 'pedido'
-        $sqlActualizarTotalPedido = "UPDATE pedido SET nombreCliente = ?, estadoCliente = ?, ciudadCliente = ?,
+                // Verificar si la manzana con el idManzana existe en la base de datos
+                $sqlManzanaExistente = "SELECT precioTonelada FROM manzana WHERE id = ?";
+                $manzanaExistente = $this->DB->Buscar_Seguro_UTF8($sqlManzanaExistente, [$idManzana]);
+
+                if (empty($manzanaExistente)) {
+                    return ['error' => "Una de las manzanas no se encuentra."];
+                }
+
+                // Calcular el costo de esta manzana y agregarlo al costo total del pedido
+                $precioTonelada = $manzanaExistente[0]['precioTonelada'];
+                $costoManzana = $cantidad * $precioTonelada;
+                $totalPedido += $costoManzana;
+
+                // Agregar la manzana al pedido
+                $sqlAgregarManzanaPedido = "INSERT INTO pedido_manzana (idPedido, idManzana, cantidad, subtotal) VALUES (?, ?, ?, ?)";
+                $this->DB->Ejecutar_Seguro_UTF8($sqlAgregarManzanaPedido, [$idPedido, $idManzana, $cantidad, $costoManzana]);
+            }
+
+            // Actualizar el costo total del pedido en la tabla 'pedido'
+            $sqlActualizarTotalPedido = "UPDATE pedido SET nombreCliente = ?, estadoCliente = ?, ciudadCliente = ?,
          correoCliente = ?, telefonoCliente = ?, total = ? WHERE id = ?";
-        $this->DB->Ejecutar_Seguro_UTF8($sqlActualizarTotalPedido, [$nombreCliente, $estadoCliente, $ciudadCliente,
-        $correoCliente, $telefonoCliente, $totalPedido, $idPedido]);
+            $this->DB->Ejecutar_Seguro_UTF8($sqlActualizarTotalPedido, [
+                $nombreCliente, $estadoCliente, $ciudadCliente,
+                $correoCliente, $telefonoCliente, $totalPedido, $idPedido
+            ]);
 
-        return ['message' => "Pedido actualizado con éxito"];
-    } catch (Exception $e) {
-        return ['error' => "No se ha podido actualizar el pedido"];
+            return ['message' => "Pedido actualizado con éxito"];
+        } catch (Exception $e) {
+            return ['error' => "No se ha podido actualizar el pedido"];
+        }
     }
-}
 
 
-//Función para eliminar un pedido
-public function eliminarPedido(int $idPedido)
+    //Función para eliminar un pedido
+    public function eliminarPedido(int $idPedido)
     {
         // Selecciona la columna 'foto' en la consulta SQL
         $sql = "DELETE * FROM pedido WHERE id = ?;";
