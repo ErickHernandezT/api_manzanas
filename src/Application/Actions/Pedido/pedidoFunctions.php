@@ -90,8 +90,10 @@ class pedidoFunctions
             ORDER BY p.fechaOrdenado";
 
             $result = $this->DB->Buscar($sql, []);
+            
 
-            $pedidos = [];
+            if (is_array($result) && count($result) > 0) {
+                $pedidos = [];
             $currentPedido = null;
 
             foreach ($result as $row) {
@@ -123,6 +125,10 @@ class pedidoFunctions
             }
 
             return $pedidos;
+            } else {
+                return ['message' => 'No se encontró ningun pedido'];
+            }
+           
         } catch (Exception $e) {
             return ['error' => $e->getMessage()];
         }
