@@ -78,7 +78,7 @@ class pedidoFunctions
 
     
 
-
+    //Función para listar todos los pedidos
     public function listaPedidos()
     {
         try {
@@ -89,7 +89,7 @@ class pedidoFunctions
             LEFT JOIN manzana AS m ON pm.idManzana = m.id
             ORDER BY p.fechaOrdenado";
 
-            $result = $this->DB->Buscar_Seguro_UTF8($sql, []);
+            $result = $this->DB->Buscar($sql, []);
 
             $pedidos = [];
             $currentPedido = null;
@@ -130,7 +130,7 @@ class pedidoFunctions
 
 
 
-
+    //Función para actualizar el pedido
     public function actualizarPedido(int $idPedido, String $nombreCliente, String $estadoCliente, String $ciudadCliente, String $correoCliente, String $telefonoCliente, array $manzanas)
 {
     try {
@@ -184,7 +184,7 @@ class pedidoFunctions
 }
 
 
-
+//Función para eliminar un pedido
 public function eliminarPedido(int $idPedido)
     {
         // Selecciona la columna 'foto' en la consulta SQL

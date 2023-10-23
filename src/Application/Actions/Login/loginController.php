@@ -51,7 +51,6 @@ class loginController extends generalController
                 $payload = [
                     'usuario' => $usuario,
                     'exp' => time() + 7 * 24 * 60 * 60 // Una semana en segundos
-                    // Puedes agregar más datos al payload si lo deseas
                 ];
                 $token = JWT::encode($payload, $key);
 
