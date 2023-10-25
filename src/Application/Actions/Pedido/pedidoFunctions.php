@@ -173,7 +173,7 @@ class pedidoFunctions
                 ];
             }
 
-            return $pedido[$pedidoId];
+            return $pedido;
         } else {
             return ['message' => 'No se encontró el pedido con el ID proporcionado'];
         }
