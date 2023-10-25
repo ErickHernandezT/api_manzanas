@@ -78,62 +78,7 @@ class pedidoFunctions
 
 
 
-    //Función para listar todos los pedidos
-    // public function listaPedidos()
-    // {
-    //     try {
-    //         $sql = "SELECT p.id AS pedido_id, p.fechaOrdenado, p.total, p.nombreCliente, p.estadoCliente, p.ciudadCliente, p.correoCliente, p.telefonoCliente,
-    //             m.id AS manzana_id, m.nombre AS manzana_nombre, pm.cantidad AS cantidad_manzana, pm.subtotal AS subtotal_manzana
-    //         FROM pedido AS p
-    //         LEFT JOIN pedido_manzana AS pm ON p.id = pm.idPedido
-    //         LEFT JOIN manzana AS m ON pm.idManzana = m.id
-    //         ORDER BY p.fechaOrdenado";
-
-    //         $result = $this->DB->Buscar($sql, []);
-
-
-    //         if (is_array($result) && count($result) > 0) {
-    //             $pedidos = [];
-    //         $currentPedido = null;
-
-    //         foreach ($result as $row) {
-    //             $pedidoId = $row['pedido_id'];
-
-    //             if ($currentPedido === null || $pedidoId !== $currentPedido['id']) {
-    //                 // Nuevo pedido
-    //                 $currentPedido = [
-    //                     'id' => $pedidoId,
-    //                     'fechaOrdenado' => $row['fechaOrdenado'],
-    //                     'total' => $row['total'],
-    //                     'nombreCliente' => $row['nombreCliente'],
-    //                     'estadoCliente' => $row['estadoCliente'],
-    //                     'ciudadCliente' => $row['ciudadCliente'],
-    //                     'correoCliente' => $row['correoCliente'],
-    //                     'telefonoCliente' => $row['telefonoCliente'],
-    //                     'manzanas' => [],
-    //                 ];
-    //                 $pedidos[] = $currentPedido;
-    //             }
-
-    //             // Agregar la manzana y la cantidad al pedido actual
-    //             $pedidos['manzanas'][] = [
-    //                 'id' => $row['manzana_id'],
-    //                 'nombre' => $row['manzana_nombre'],
-    //                 'cantidad' => $row['cantidad_manzana'],
-    //                 'subtotal' => $row['subtotal_manzana'],
-    //             ];
-    //         }
-
-    //         return $pedidos;
-    //         } else {
-    //             return ['message' => 'No se encontró ningun pedido'];
-    //         }
-
-    //     } catch (Exception $e) {
-    //         return ['error' => $e->getMessage()];
-    //     }
-    // }
-
+    
     public function listaPedidos()
     {
         try {
@@ -185,6 +130,58 @@ class pedidoFunctions
             return ['error' => $e->getMessage()];
         }
     }
+
+
+
+    public function obtenerPedidoPorId($pedidoId)
+{
+    try {
+        $sql = "SELECT p.id AS pedido_id, p.fechaOrdenado, p.total, p.nombreCliente, p.estadoCliente, p.ciudadCliente, p.correoCliente, p.telefonoCliente,
+                m.id AS manzana_id, m.nombre AS manzana_nombre, pm.cantidad AS cantidad_manzana, pm.subtotal AS subtotal_manzana
+            FROM pedido AS p
+            LEFT JOIN pedido_manzana AS pm ON p.id = pm.idPedido
+            LEFT JOIN manzana AS m ON pm.idManzana = m.id
+            WHERE p.id = ?";
+
+        $result = $this->DB->Buscar_Seguro_UTF8($sql, [$pedidoId]);
+
+        if (is_array($result) && count($result) > 0) {
+            $pedido = null;
+
+            foreach ($result as $row) {
+                // Crea el pedido si aún no existe
+                if ($pedido === null) {
+                    $pedido = [
+                        'id' => $row['pedido_id'],
+                        'fechaOrdenado' => $row['fechaOrdenado'],
+                        'total' => $row['total'],
+                        'nombreCliente' => $row['nombreCliente'],
+                        'estadoCliente' => $row['estadoCliente'],
+                        'ciudadCliente' => $row['ciudadCliente'],
+                        'correoCliente' => $row['correoCliente'],
+                        'telefonoCliente' => $row['telefonoCliente'],
+                        'manzanas' => [],
+                    ];
+                }
+
+                // Agregar la manzana y la cantidad al pedido
+                $pedido['manzanas'][] = [
+                    'id' => $row['manzana_id'],
+                    'nombre' => $row['manzana_nombre'],
+                    'cantidad' => $row['cantidad_manzana'],
+                    'subtotal' => $row['subtotal_manzana'],
+                ];
+            }
+
+            return $pedido;
+        } else {
+            return ['message' => 'No se encontró el pedido con el ID proporcionado'];
+        }
+    } catch (Exception $e) {
+        return ['error' => $e->getMessage()];
+    }
+}
+
 
 
 
