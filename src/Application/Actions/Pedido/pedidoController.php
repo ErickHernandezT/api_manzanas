@@ -47,8 +47,8 @@ class pedidoController extends generalController
 
         if (!empty($manzanasArray)) {
             // Llama a la función para hacer el pedido
-            // $mensaje = $this->funciones->hacerPedido($nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente, $manzanasArray);
-            $mensaje = $nombreCliente;
+            $mensaje = $this->funciones->hacerPedido($nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente, $manzanasArray);
+           
             if ($mensaje && isset($mensaje['message'])) {
                 $code = 200;
             } else {
