@@ -63,7 +63,7 @@ class pedidoController extends generalController
         $mensaje = ['message' => 'Datos incorrectos o vacíos en el pedido'];
     }
 
-    return $this->response($code, $mensaje, $response);
+    return $this->response($code, [$mensaje], $response);
 }
 
 
