@@ -256,45 +256,118 @@ class pedidoFunctions
 
 
 
-    //Función para liberar el pedido y que se considere como venta
+    // //Función para liberar el pedido y que se considere como venta
+    // public function liberarPedido(int $idPedido)
+    // {
+    //     try {
+    //         // Obtener los datos del pedido a cerrar
+    //         $sqlObtenerPedido = "SELECT * FROM pedido WHERE id = ?";
+    //         $pedido = $this->DB->Buscar_Seguro_UTF8($sqlObtenerPedido, [$idPedido]);
+
+    //         if (empty($pedido)) {
+    //             return ['error' => "Lo lamentamos su pedido no se encuentra"];
+    //         }
+
+    //         // Crear una nueva venta con los datos del pedido y obtener el ID insertado
+    //         $fechaLiberado = date("Y-m-d");
+    //         $total = $pedido[0]['total'];
+    //         $nombreCliente = $pedido[0]['nombreCliente'];
+    //         $estadoCliente = $pedido[0]['estadoCliente'];
+    //         $ciudadCliente = $pedido[0]['ciudadCliente'];
+    //         $correoCliente = $pedido[0]['correoCliente'];
+    //         $telefonoCliente = $pedido[0]['telefonoCliente'];
+
+    //         $sqlCrearVenta = "INSERT INTO venta (fechaLiberado, total, nombreCliente, estadoCliente, ciudadCliente, correoCliente, telefonoCliente) 
+    //         VALUES (?, ?, ?, ?, ?, ?, ?);";
+    //         $ventaIdQuery = $this->DB->Ejecutar_Seguro_UTF8($sqlCrearVenta, [
+    //             $fechaLiberado, $total, $nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente
+    //         ]);
+    //         $ventaId =  $this->DB->getUltimoIdInsertado();
+    //         // Transferir los registros de pedido_manzana a venta_manzana
+    //         $sqlTransferirManzanas = "INSERT INTO venta_manzana (idVenta, idManzana, cantidad, subtotal) 
+    //         SELECT ?, idManzana, cantidad, subtotal FROM pedido_manzana WHERE idPedido = ?";
+    //         $this->DB->Ejecutar_Seguro_UTF8($sqlTransferirManzanas, [$ventaId, $idPedido]);
+
+    //         // Eliminar el pedido
+    //         $sqlEliminarPedido = "DELETE FROM pedido WHERE id = ?";
+    //         $this->DB->Ejecutar_Seguro_UTF8($sqlEliminarPedido, [$idPedido]);
+
+    //         return ['message' => "Pedido liberado"];
+    //     } catch (Exception $e) {
+    //         return ['error' => "Error al liberar pedido"];
+    //     }
+    // }
+
+
+
+
     public function liberarPedido(int $idPedido)
-    {
-        try {
-            // Obtener los datos del pedido a cerrar
-            $sqlObtenerPedido = "SELECT * FROM pedido WHERE id = ?";
-            $pedido = $this->DB->Buscar_Seguro_UTF8($sqlObtenerPedido, [$idPedido]);
+{
+    try {
+        // Obtener los datos del pedido a cerrar
+        $sqlObtenerPedido = "SELECT * FROM pedido WHERE id = ?";
+        $pedido = $this->DB->Buscar_Seguro_UTF8($sqlObtenerPedido, [$idPedido]);
 
-            if (empty($pedido)) {
-                return ['error' => "Lo lamentamos su pedido no se encuentra"];
-            }
-
-            // Crear una nueva venta con los datos del pedido y obtener el ID insertado
-            $fechaLiberado = date("Y-m-d");
-            $total = $pedido[0]['total'];
-            $nombreCliente = $pedido[0]['nombreCliente'];
-            $estadoCliente = $pedido[0]['estadoCliente'];
-            $ciudadCliente = $pedido[0]['ciudadCliente'];
-            $correoCliente = $pedido[0]['correoCliente'];
-            $telefonoCliente = $pedido[0]['telefonoCliente'];
-
-            $sqlCrearVenta = "INSERT INTO venta (fechaLiberado, total, nombreCliente, estadoCliente, ciudadCliente, correoCliente, telefonoCliente) 
-            VALUES (?, ?, ?, ?, ?, ?, ?);";
-            $ventaIdQuery = $this->DB->Ejecutar_Seguro_UTF8($sqlCrearVenta, [
-                $fechaLiberado, $total, $nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente
-            ]);
-            $ventaId =  $this->DB->getUltimoIdInsertado();
-            // Transferir los registros de pedido_manzana a venta_manzana
-            $sqlTransferirManzanas = "INSERT INTO venta_manzana (idVenta, idManzana, cantidad, subtotal) 
-            SELECT ?, idManzana, cantidad, subtotal FROM pedido_manzana WHERE idPedido = ?";
-            $this->DB->Ejecutar_Seguro_UTF8($sqlTransferirManzanas, [$ventaId, $idPedido]);
-
-            // Eliminar el pedido
-            $sqlEliminarPedido = "DELETE FROM pedido WHERE id = ?";
-            $this->DB->Ejecutar_Seguro_UTF8($sqlEliminarPedido, [$idPedido]);
-
-            return ['message' => "Pedido liberado"];
-        } catch (Exception $e) {
-            return ['error' => "Error al liberar pedido"];
+        if (empty($pedido)) {
+            return ['error' => "Lo lamentamos, su pedido no se encuentra"];
         }
+
+        // Verificar el stock de cada manzana en el pedido
+        $sqlVerificarStock = "SELECT pm.idManzana, m.stock, SUM(pm.cantidad) as total_cantidad
+            FROM pedido_manzana pm
+            INNER JOIN manzana m ON pm.idManzana = m.id
+            WHERE pm.idPedido = ?
+            GROUP BY pm.idManzana";
+        $resultVerificarStock = $this->DB->Buscar_Seguro_UTF8($sqlVerificarStock, [$idPedido]);
+
+        foreach ($resultVerificarStock as $row) {
+            $idManzana = $row['idManzana'];
+            $stockDisponible = $row['stock'];
+            $cantidadPedido = $row['total_cantidad'];
+
+            if ($stockDisponible < $cantidadPedido) {
+                return ['error' => "No hay suficiente stock de la manzana con ID $idManzana para satisfacer el pedido"];
+            }
+        }
+
+        // Actualizar el stock de cada manzana
+        foreach ($resultVerificarStock as $row) {
+            $idManzana = $row['idManzana'];
+            $cantidadPedido = $row['total_cantidad'];
+
+            $sqlActualizarStock = "UPDATE manzana SET stock = stock - ? WHERE id = ?";
+            $this->DB->Ejecutar_Seguro_UTF8($sqlActualizarStock, [$cantidadPedido, $idManzana]);
+        }
+
+        // Crear una nueva venta con los datos del pedido y obtener el ID insertado
+        $fechaLiberado = date("Y-m-d");
+        $total = $pedido[0]['total'];
+        $nombreCliente = $pedido[0]['nombreCliente'];
+        $estadoCliente = $pedido[0]['estadoCliente'];
+        $ciudadCliente = $pedido[0]['ciudadCliente'];
+        $correoCliente = $pedido[0]['correoCliente'];
+        $telefonoCliente = $pedido[0]['telefonoCliente'];
+
+        $sqlCrearVenta = "INSERT INTO venta (fechaLiberado, total, nombreCliente, estadoCliente, ciudadCliente, correoCliente, telefonoCliente) 
+        VALUES (?, ?, ?, ?, ?, ?, ?);";
+        $ventaIdQuery = $this->DB->Ejecutar_Seguro_UTF8($sqlCrearVenta, [
+            $fechaLiberado, $total, $nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente
+        ]);
+        $ventaId =  $this->DB->getUltimoIdInsertado();
+
+        // Transferir los registros de pedido_manzana a venta_manzana
+        $sqlTransferirManzanas = "INSERT INTO venta_manzana (idVenta, idManzana, cantidad, subtotal) 
+        SELECT ?, idManzana, cantidad, subtotal FROM pedido_manzana WHERE idPedido = ?";
+        $this->DB->Ejecutar_Seguro_UTF8($sqlTransferirManzanas, [$ventaId, $idPedido]);
+
+        // Eliminar el pedido
+        $sqlEliminarPedido = "DELETE FROM pedido WHERE id = ?";
+        $this->DB->Ejecutar_Seguro_UTF8($sqlEliminarPedido, [$idPedido]);
+
+        return ['message' => "Pedido liberado"];
+    } catch (Exception $e) {
+        return ['error' => "Error al liberar pedido"];
     }
+}
+
 }
