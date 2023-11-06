@@ -42,7 +42,7 @@ class manzanaController extends generalController
                 $precioKilo, $precioCaja, $precioTonelada, $stock, $categoria);
     
                 // if ($mensaje) {
-                     $code = 200;
+                     $code = 404;
                 // } else {
                 //     $code = 404;
                 // }
