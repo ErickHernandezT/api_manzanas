@@ -38,7 +38,7 @@ class manzanaController extends generalController
     
             
                 // Verifica que la foto se haya cargado correctamente
-                $mensaje = $this->funciones->ingresarManzanas($nombre, $foto, $nivelMadurez, $descripcion, $estatus, 
+                $mensaje = $this->funciones->ingresarManzana($nombre, $foto, $nivelMadurez, $descripcion, $estatus, 
                 $precioKilo, $precioCaja, $precioTonelada, $stock, $categoria);
     
                 if ($mensaje) {
@@ -100,7 +100,7 @@ class manzanaController extends generalController
     
             
                 // Verifica que la foto se haya cargado correctamente
-                $mensaje = $this->funciones->actualizarManzanas($id, $nombre, $foto, $nivelMadurez, $descripcion, $estatus, 
+                $mensaje = $this->funciones->actualizarManzana($id, $nombre, $foto, $nivelMadurez, $descripcion, $estatus, 
                 $precioKilo, $precioCaja, $precioTonelada, $stock, $categoria);
     
                 if ($mensaje) {

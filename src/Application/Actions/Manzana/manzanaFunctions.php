@@ -22,7 +22,7 @@ class manzanaFunctions
 
 
 
-    public function ingresarManzanas(String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock, Int $categoria)
+    public function ingresarManzana(String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock, Int $categoria)
     {
         // Se usa left join para que también muestre los productos que no tengan
         $sql2 = "INSERT INTO manzana (nombre, foto, nivelMadurez, descripcion, estatus, precioKilo, precioCaja, precioTonelada, stock, idCategoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -48,7 +48,7 @@ class manzanaFunctions
 
 
 
-public function actualizarManzanas(int $id, String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock, Int $categoria)
+public function actualizarManzana(int $id, String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock, Int $categoria)
     {
         // Query SQL para actualizar los datos en la tabla manzana
         $sql = "UPDATE manzana SET nombre = ?, foto = ?, nivelMadurez = ?, descripcion = ?, estatus = ?, precioKilo = ?, precioCaja = ?, precioTonelada = ?, stock = ?, idCategoria=? WHERE id = ?";
