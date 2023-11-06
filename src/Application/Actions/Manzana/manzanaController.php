@@ -41,11 +41,11 @@ class manzanaController extends generalController
                 $mensaje = $this->funciones->ingresarManzana($nombre, $foto, $nivelMadurez, $descripcion, $estatus, 
                 $precioKilo, $precioCaja, $precioTonelada, $stock, $categoria);
     
-                // if ($mensaje) {
-                     $code = 404;
-                // } else {
-                //     $code = 404;
-                // }
+                if ($mensaje) {
+                    $code = 200;
+                } else {
+                    $code = 404;
+                }
            
         } else {
             $code = 400;
