@@ -29,16 +29,17 @@ class manzanaController extends generalController
         $precioCaja = (isset($params['precioCaja'])) ? (float)strip_tags($params['precioCaja']) : 0.0;
         $precioTonelada = (isset($params['precioTonelada'])) ? (float)strip_tags($params['precioTonelada']) : 0.0;
         $stock = (isset($params['stock'])) ? (int)strip_tags($params['stock']) : 0;
+        $categoria = (isset($params['categoria'])) ? (int)strip_tags($params['categoria']) : 0;
        
     
         if ($nombre != '' && $nivelMadurez != '' && $descripcion != '' && $foto!= '' && $estatus > 0 && $precioKilo > 0 
-        && $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 ) {
+        && $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 && $categoria != '') {
             
     
             
                 // Verifica que la foto se haya cargado correctamente
                 $mensaje = $this->funciones->ingresarManzanas($nombre, $foto, $nivelMadurez, $descripcion, $estatus, 
-                $precioKilo, $precioCaja, $precioTonelada, $stock);
+                $precioKilo, $precioCaja, $precioTonelada, $stock, $categoria);
     
                 if ($mensaje) {
                     $code = 200;
@@ -91,15 +92,16 @@ class manzanaController extends generalController
         $precioCaja = (isset($params['precioCaja'])) ? (float)strip_tags($params['precioCaja']) : 0.0;
         $precioTonelada = (isset($params['precioTonelada'])) ? (float)strip_tags($params['precioTonelada']) : 0.0;
         $stock = (isset($params['stock'])) ? (int)strip_tags($params['stock']) : 0;
+        $categoria = (isset($params['categoria'])) ? (int)strip_tags($params['categoria']) : 0;
     
         if ($id > 0 && $nombre != '' && $nivelMadurez != '' && $descripcion != '' && $foto!= '' && $estatus > 0 && $precioKilo > 0 &&
-        $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 ) {
+        $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 && $categoria != '') {
             
     
             
                 // Verifica que la foto se haya cargado correctamente
                 $mensaje = $this->funciones->actualizarManzanas($id, $nombre, $foto, $nivelMadurez, $descripcion, $estatus, 
-                $precioKilo, $precioCaja, $precioTonelada, $stock);
+                $precioKilo, $precioCaja, $precioTonelada, $stock, $categoria);
     
                 if ($mensaje) {
                     $code = 200;
