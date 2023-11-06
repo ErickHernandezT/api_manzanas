@@ -33,7 +33,7 @@ class manzanaController extends generalController
        
     
         if ($nombre != '' && $nivelMadurez != '' && $descripcion != '' && $foto!= '' && $estatus > 0 && $precioKilo > 0 
-        && $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 && $categoria != '') {
+        && $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 && $categoria > 0) {
             
     
             
@@ -95,7 +95,7 @@ class manzanaController extends generalController
         $categoria = (isset($params['categoria'])) ? (int)strip_tags($params['categoria']) : 0;
     
         if ($id > 0 && $nombre != '' && $nivelMadurez != '' && $descripcion != '' && $foto!= '' && $estatus > 0 && $precioKilo > 0 &&
-        $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 && $categoria != '') {
+        $precioCaja > 0 && $precioTonelada > 0 && $stock > 0 && $categoria > 0) {
             
     
             
