@@ -54,7 +54,7 @@ public function actualizarManzana(int $id, String $nombre, String $foto, String 
         $sql = "UPDATE manzana SET nombre = ?, foto = ?, nivelMadurez = ?, descripcion = ?, estatus = ?, precioKilo = ?, precioCaja = ?, precioTonelada = ?, stock = ?, idCategoria = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
-        $parametros = [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precioKilo, $precioCaja, $precioTonelada, $stock, $id, $categoria];
+        $parametros = [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precioKilo, $precioCaja, $precioTonelada, $stock, $categoria, $id];
 
         // Ejecutamos la consulta
         $resultado = $this->DB->Ejecutar_Seguro_UTF8($sql, $parametros);
