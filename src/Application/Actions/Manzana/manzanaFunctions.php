@@ -51,7 +51,7 @@ class manzanaFunctions
 public function actualizarManzana(int $id, String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock, Int $categoria)
     {
         // Query SQL para actualizar los datos en la tabla manzana
-        $sql = "UPDATE manzana SET nombre = ?, foto = ?, nivelMadurez = ?, descripcion = ?, estatus = ?, precioKilo = ?, precioCaja = ?, precioTonelada = ?, stock = ?, idCategoria=? WHERE id = ?";
+        $sql = "UPDATE manzana SET nombre = ?, foto = ?, nivelMadurez = ?, descripcion = ?, estatus = ?, precioKilo = ?, precioCaja = ?, precioTonelada = ?, stock = ?, idCategoria = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
         $parametros = [$nombre, $foto, $nivelMadurez, $descripcion, $estatus, $precioKilo, $precioCaja, $precioTonelada, $stock, $id, $categoria];
