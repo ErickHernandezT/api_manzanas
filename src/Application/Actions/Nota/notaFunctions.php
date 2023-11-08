@@ -88,10 +88,10 @@ class notaFunctions
 
 
 
-    public function rechazarNota($idNota)
+    public function rechazarNota($nota)
     {
         $sql = "DELETE FROM nota WHERE id = ?";
-        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql, [$idNota]);
+        $statement = $this->DB->Ejecutar_Seguro_UTF8($sql, [$nota]);
 
         // Verificar si la eliminación fue exitosa
         return ($statement == '200') ? true : false;
