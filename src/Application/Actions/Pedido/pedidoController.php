@@ -130,7 +130,7 @@ public function validarActualizarPedido($request, $response, $args){
 
     $manzanas = (isset($params['manzanas'])) ? $params['manzanas'] : [];
 
-    if ($nombreCliente != '' && $estadoCliente != '' && $ciudadCliente != '' && $correoCliente != '' && $telefonoCliente != '' && !empty($manzanas)) {
+    if ($idPedido > 0 && $nombreCliente != '' && $estadoCliente != '' && $ciudadCliente != '' && $correoCliente != '' && $telefonoCliente != '' && !empty($manzanas)) {
         $manzanasArray = [];
 
         foreach ($manzanas as $manzana) {
