@@ -121,7 +121,6 @@ public function validarListarPedidoId($request, $response, $args)
 
 public function validarActualizarPedido($request, $response, $args){
     $params = (array)$request->getParsedBody();
-
     $idPedido = (isset($params['idPedido'])) ? (int)strip_tags($params['idPedido']) : 0;
     $nombreCliente = (isset($params['nombreCliente'])) ? strip_tags($params['nombreCliente']) : '';
     $estadoCliente = (isset($params['estadoCliente'])) ? strip_tags($params['estadoCliente']) : '';
@@ -131,7 +130,7 @@ public function validarActualizarPedido($request, $response, $args){
 
     $manzanas = (isset($params['manzanas'])) ? $params['manzanas'] : [];
 
-    if ($idPedido > 0 && $nombreCliente != '' && $estadoCliente != '' && $ciudadCliente != '' && $correoCliente != '' && $telefonoCliente != '' && !empty($manzanas)) {
+    if ($nombreCliente != '' && $estadoCliente != '' && $ciudadCliente != '' && $correoCliente != '' && $telefonoCliente != '' && !empty($manzanas)) {
         $manzanasArray = [];
 
         foreach ($manzanas as $manzana) {
@@ -149,7 +148,7 @@ public function validarActualizarPedido($request, $response, $args){
         if (!empty($manzanasArray)) {
             // Llama a la función para hacer el pedido
             $mensaje = $this->funciones->actualizarPedido($idPedido, $nombreCliente, $estadoCliente, $ciudadCliente, $correoCliente, $telefonoCliente, $manzanasArray);
-
+           
             if ($mensaje && isset($mensaje['message'])) {
                 $code = 200;
             } else {
@@ -164,7 +163,7 @@ public function validarActualizarPedido($request, $response, $args){
         $mensaje = ['message' => 'Datos incorrectos o vacíos en el pedido'];
     }
 
-    return $this->response($code, $mensaje, $response);
+    return $this->response($code, [$mensaje], $response);
 }
 
 
