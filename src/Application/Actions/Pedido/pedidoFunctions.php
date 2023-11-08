@@ -115,7 +115,7 @@ class pedidoFunctions
 
                     // Agregar la manzana y la cantidad al pedido actual
                     $pedidos[$pedidoId]['manzanas'][] = [
-                        'id' => $row['manzana_id'],
+                        'idManzana' => $row['manzana_id'],
                         'nombre' => $row['manzana_nombre'],
                         'cantidad' => $row['cantidad_manzana'],
                         'subtotal' => $row['subtotal_manzana'],
@@ -166,7 +166,7 @@ class pedidoFunctions
     
                     // Agregar la manzana y la cantidad al pedido
                     $pedido['manzanas'][] = [
-                        'id' => $row['manzana_id'],
+                        'idManzana' => $row['manzana_id'],
                         'nombre' => $row['manzana_nombre'],
                         'cantidad' => $row['cantidad_manzana'],
                         'subtotal' => $row['subtotal_manzana'],
