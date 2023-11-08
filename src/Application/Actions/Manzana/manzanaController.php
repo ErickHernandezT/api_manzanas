@@ -78,6 +78,26 @@ class manzanaController extends generalController
 
 
 
+    public function validarListaManzanasSencilla($request, $response, $args)
+    {
+        
+
+            $mensaje = $this->funciones->listaManzanasSencilla();
+
+            if ($mensaje) {
+                $code = 200;
+            } else {
+                $code = 404;
+                $mensaje = ['message' => 'Error al cargar manzanas'];
+            }
+       
+
+        // Retornamos la respuesta
+        return $this->response($code, $mensaje, $response);
+    }
+
+
+
 
     public function validarActualizarManzanas($request, $response, $args)
     {

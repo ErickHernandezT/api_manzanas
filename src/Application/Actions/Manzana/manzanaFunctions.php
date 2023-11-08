@@ -32,23 +32,38 @@ class manzanaFunctions
     }
 
     public function listaManzanas()
-{
-    $sql = "SELECT m.id, m.nombre, m.nivelMadurez, m.descripcion, m.estatus, m.precioKilo, m.precioCaja, m.precioTonelada, m.stock, m.foto, c.nombre AS categoria_nombre
+    {
+        $sql = "SELECT m.id, m.nombre, m.nivelMadurez, m.descripcion, m.estatus, m.precioKilo, m.precioCaja, m.precioTonelada, m.stock, m.foto, c.nombre AS categoria_nombre
             FROM manzana AS m
             LEFT JOIN categoria AS c ON m.idCategoria = c.id";
 
-    $statement = $this->DB->Buscar($sql, []);
+        $statement = $this->DB->Buscar($sql, []);
 
-    if (is_array($statement) && count($statement) > 0) {
-        return $statement;
-    } else {
-        return ['message' => "Error al mostrar las manzanas"];
+        if (is_array($statement) && count($statement) > 0) {
+            return $statement;
+        } else {
+            return ['message' => "Error al mostrar las manzanas"];
+        }
     }
-}
+
+
+    public function listaManzanasSencilla()
+    {
+        $sql = "SELECT id, nombre FROM manzana";
+
+        $statement = $this->DB->Buscar($sql, []);
+
+        if (is_array($statement) && count($statement) > 0) {
+            return $statement;
+        } else {
+            return ['message' => "Error al mostrar las manzanas"];
+        }
+    }
+    
 
 
 
-public function actualizarManzana(int $id, String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock, Int $categoria)
+    public function actualizarManzana(int $id, String $nombre, String $foto, String $nivelMadurez, String $descripcion, Int $estatus, float $precioKilo, float $precioCaja, float $precioTonelada, Int $stock, Int $categoria)
     {
         // Query SQL para actualizar los datos en la tabla manzana
         $sql = "UPDATE manzana SET nombre = ?, foto = ?, nivelMadurez = ?, descripcion = ?, estatus = ?, precioKilo = ?, precioCaja = ?, precioTonelada = ?, stock = ?, idCategoria = ? WHERE id = ?";
@@ -95,5 +110,4 @@ public function actualizarManzana(int $id, String $nombre, String $foto, String 
             return ['message' => 'Error al mostrar la manzana seleccionada'];
         }
     }
-    
 }

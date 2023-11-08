@@ -235,6 +235,24 @@ return function (App $app) {
         $group->post('/actualizar', manzanaController::class . ':validarActualizarManzanas');
         //ruta para eliminar una manzana
         $group->post('/eliminar', manzanaController::class . ':validarEliminarManzana');
+        //ruta para listar las manzanas sencillas para el combo box de las notas
+        $group->post('/listaSencilla', manzanaController::class . ':validarListaManzanasSencilla');
+    });
+
+
+
+    // Grupo para manzanas
+    $app->group('/Nota', function (Group $group) {
+        //ruta para ingresar una nota
+        $group->post('/crear', manzanaController::class . ':validarCrearNota');
+        //ruta para aceptar una nota
+        $group->post('/aceptar', manzanaController::class . ':validarAceptarNota');
+        //ruta para rechazar una nota
+        $group->post('/rechazar', manzanaController::class . ':validarRechazarNota');
+        //ruta para listar todas las notas
+        $group->post('/listaNotas', manzanaController::class . ':validarListaNotas');
+        //ruta para listar los tipos de notas para el combo box de las notas
+        $group->post('/listaTipoNotasSencilla', manzanaController::class . ':validarListaTipoNotaSencilla');
     });
 
     //Grupo para Pedidos
