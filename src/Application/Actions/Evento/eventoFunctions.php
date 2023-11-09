@@ -20,37 +20,6 @@ class eventoFunctions
         $this->DB = new mysql();
     }
 
-    public function listaEventos()
-    {
-        // Selecciona la columna 'foto' en la consulta SQL
-        $sql = "SELECT id, nombre, foto, fechaInicio, fechaFin, latitud, longitud, descripcion FROM evento";
-    
-        $statement = $this->DB->Buscar($sql, []);
-    
-        if (is_array($statement) && count($statement) > 0) {
-            return $statement;
-        } else {
-            return ['message' =>  $statement];
-        }
-    }
-
-
-
-    public function buscarEventoPorId(int $id)
-    {
-        // Query SQL para buscar una manzana por su ID
-        $sql = "SELECT id, nombre, foto, fechaInicio, fechaFin, latitud, longitud, descripcion FROM evento WHERE id = ?";
-    
-        // Ejecutamos la consulta
-        $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
-    
-        if (is_array($result) && count($result) > 0) {
-            return $result[0]; // Devuelve la primera fila que coincide con el ID
-        } else {
-            return ['message' => 'No se encontró ningun evento con el ID proporcionado'];
-        }
-    }
-
 
 
     public function ingresarEvento(String $nombre, String $foto, String $fechaInicio, String $fechaFin, String $latitud, String $longitud, String $descripcion)
@@ -92,5 +61,41 @@ class eventoFunctions
         // Verificamos si la eliminación fue exitosa (código 200)
         return ($statement == '200') ? true : false;;
     }
+    
+
+    public function listaEventos()
+    {
+        // Selecciona la columna 'foto' en la consulta SQL
+        $sql = "SELECT id, nombre, foto, fechaInicio, fechaFin, latitud, longitud, descripcion FROM evento";
+    
+        $statement = $this->DB->Buscar($sql, []);
+    
+        if (is_array($statement) && count($statement) > 0) {
+            return $statement;
+        } else {
+            return ['message' =>  $statement];
+        }
+    }
+
+
+
+    public function buscarEventoPorId(int $id)
+    {
+        // Query SQL para buscar una manzana por su ID
+        $sql = "SELECT id, nombre, foto, fechaInicio, fechaFin, latitud, longitud, descripcion FROM evento WHERE id = ?";
+    
+        // Ejecutamos la consulta
+        $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
+    
+        if (is_array($result) && count($result) > 0) {
+            return $result[0]; // Devuelve la primera fila que coincide con el ID
+        } else {
+            return ['message' => 'No se encontró ningun evento con el ID proporcionado'];
+        }
+    }
+
+
+
+    
 
 }

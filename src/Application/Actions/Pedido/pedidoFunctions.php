@@ -133,7 +133,7 @@ class pedidoFunctions
 
 
 
-    public function obtenerPedidoPorId($pedidoId)
+    public function obtenerPedidoPorId(int $pedidoId)
     {
         try {
             $sql = "SELECT p.id AS pedido_id, p.fechaOrdenado, p.total, p.nombreCliente, p.estadoCliente, p.ciudadCliente, p.correoCliente, p.telefonoCliente,

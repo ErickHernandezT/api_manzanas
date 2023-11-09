@@ -20,37 +20,6 @@ class actividadFunctions
         $this->DB = new mysql();
     }
 
-    public function listaActividades()
-    {
-        // Selecciona la columna 'foto' en la consulta SQL
-        $sql = "SELECT id, nombre, foto, descripcion FROM actividad";
-    
-        $statement = $this->DB->Buscar($sql, []);
-    
-        if (is_array($statement) && count($statement) > 0) {
-            return $statement;
-        } else {
-            return ['message' =>  "No se pudieron obtener la lista de actividades"];
-        }
-    }
-
-
-
-    public function buscarActividadPorId(int $id)
-    {
-        // Query SQL para buscar una manzana por su ID
-        $sql = "SELECT id, nombre, foto, descripcion FROM actividad WHERE id = ?";
-    
-        // Ejecutamos la consulta
-        $statement = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
-    
-        if (is_array($statement) && count($statement) > 0) {
-            return $statement[0]; // Devuelve la primera fila que coincide con el ID
-        } else {
-            return ['message' => 'No se encontró ninguna actividad con el ID proporcionado'];
-        }
-    }
-
 
 
     public function ingresarActividad(String $nombre, String $foto, String $descripcion)
@@ -92,5 +61,42 @@ class actividadFunctions
         // Verificamos si la eliminación fue exitosa (código 200)
         return ($statement == '200') ? true : false;
     }
+
+    
+
+    public function listaActividades()
+    {
+        // Selecciona la columna 'foto' en la consulta SQL
+        $sql = "SELECT id, nombre, foto, descripcion FROM actividad";
+    
+        $statement = $this->DB->Buscar($sql, []);
+    
+        if (is_array($statement) && count($statement) > 0) {
+            return $statement;
+        } else {
+            return ['message' =>  "No se pudieron obtener la lista de actividades"];
+        }
+    }
+
+
+
+    public function buscarActividadPorId(int $id)
+    {
+        // Query SQL para buscar una manzana por su ID
+        $sql = "SELECT id, nombre, foto, descripcion FROM actividad WHERE id = ?";
+    
+        // Ejecutamos la consulta
+        $statement = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
+    
+        if (is_array($statement) && count($statement) > 0) {
+            return $statement[0]; // Devuelve la primera fila que coincide con el ID
+        } else {
+            return ['message' => 'No se encontró ninguna actividad con el ID proporcionado'];
+        }
+    }
+
+
+
+    
 
 }

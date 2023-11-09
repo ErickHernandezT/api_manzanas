@@ -20,37 +20,6 @@ class derivadosManzanaFunctions
         $this->DB = new mysql();
     }
 
-    public function listaDerivadosManzana()
-    {
-        // Selecciona la columna 'foto' en la consulta SQL
-        $sql = "SELECT id, nombre, foto, descripcion FROM derivado_Manzana";
-    
-        $statement = $this->DB->Buscar($sql, []);
-    
-        if (is_array($statement) && count($statement) > 0) {
-            return $statement;
-        } else {
-            return ['message' =>  $statement];
-        }
-    }
-
-
-
-    public function buscarDerivadoManzanaPorId(int $id)
-    {
-        // Query SQL para buscar una manzana por su ID
-        $sql = "SELECT id, nombre, foto, descripcion FROM derivado_Manzana WHERE id = ?";
-    
-        // Ejecutamos la consulta
-        $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
-    
-        if (is_array($result) && count($result) > 0) {
-            return $result[0]; // Devuelve la primera fila que coincide con el ID
-        } else {
-            return ['message' => 'No se encontró ninguna producto derivado con el ID proporcionado'];
-        }
-    }
-
 
 
     public function ingresarDerivadoManzana(String $nombre, String $foto, String $descripcion)
@@ -92,5 +61,40 @@ class derivadosManzanaFunctions
         // Verificamos si la eliminación fue exitosa (código 200)
         return ($statement == '200') ? true : false;;
     }
+
+    public function listaDerivadosManzana()
+    {
+        // Selecciona la columna 'foto' en la consulta SQL
+        $sql = "SELECT id, nombre, foto, descripcion FROM derivado_Manzana";
+    
+        $statement = $this->DB->Buscar($sql, []);
+    
+        if (is_array($statement) && count($statement) > 0) {
+            return $statement;
+        } else {
+            return ['message' =>  $statement];
+        }
+    }
+
+
+
+    public function buscarDerivadoManzanaPorId(int $id)
+    {
+        // Query SQL para buscar una manzana por su ID
+        $sql = "SELECT id, nombre, foto, descripcion FROM derivado_Manzana WHERE id = ?";
+    
+        // Ejecutamos la consulta
+        $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
+    
+        if (is_array($result) && count($result) > 0) {
+            return $result[0]; // Devuelve la primera fila que coincide con el ID
+        } else {
+            return ['message' => 'No se encontró ninguna producto derivado con el ID proporcionado'];
+        }
+    }
+
+
+
+   
 
 }

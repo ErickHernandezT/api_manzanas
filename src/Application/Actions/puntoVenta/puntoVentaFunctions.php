@@ -20,36 +20,6 @@ class puntoVentaFunctions
         $this->DB = new mysql();
     }
 
-    public function listaPuntosVenta()
-    {
-        // Selecciona la columna 'foto' en la consulta SQL
-        $sql2 = "SELECT id, nombre, foto, latitud, longitud, estatus, horario FROM punto_venta";
-    
-        $statement = $this->DB->Buscar($sql2, []);
-    
-        if (is_array($statement) && count($statement) > 0) {
-            return $statement;
-        } else {
-            return ['message' =>  $statement];
-        }
-    }
-
-
-
-    public function buscarPuntoVentaPorId(int $id)
-    {
-        // Query SQL para buscar una manzana por su ID
-        $sql = "SELECT id, nombre, foto, latitud, longitud, estatus, horario FROM punto_venta WHERE id = ?";
-    
-        // Ejecutamos la consulta
-        $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
-    
-        if (is_array($result) && count($result) > 0) {
-            return $result[0]; // Devuelve la primera fila que coincide con el ID
-        } else {
-            return ['message' => 'No se encontró ningun punto de venta con el ID proporcionado'];
-        }
-    }
 
 
 
@@ -92,5 +62,41 @@ class puntoVentaFunctions
         // Verificamos si la eliminación fue exitosa (código 200)
         return ($resultado === '200');
     }
+
+    
+    public function listaPuntosVenta()
+    {
+        // Selecciona la columna 'foto' en la consulta SQL
+        $sql2 = "SELECT id, nombre, foto, latitud, longitud, estatus, horario FROM punto_venta";
+    
+        $statement = $this->DB->Buscar($sql2, []);
+    
+        if (is_array($statement) && count($statement) > 0) {
+            return $statement;
+        } else {
+            return ['message' =>  $statement];
+        }
+    }
+
+
+
+    public function buscarPuntoVentaPorId(int $id)
+    {
+        // Query SQL para buscar una manzana por su ID
+        $sql = "SELECT id, nombre, foto, latitud, longitud, estatus, horario FROM punto_venta WHERE id = ?";
+    
+        // Ejecutamos la consulta
+        $result = $this->DB->Buscar_Seguro_UTF8($sql, [$id]);
+    
+        if (is_array($result) && count($result) > 0) {
+            return $result[0]; // Devuelve la primera fila que coincide con el ID
+        } else {
+            return ['message' => 'No se encontró ningun punto de venta con el ID proporcionado'];
+        }
+    }
+
+
+
+    
 
 }
