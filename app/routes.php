@@ -15,6 +15,7 @@ use App\Application\Actions\Login\loginController;
 use App\Application\Actions\Manzana\manzanaController;
 use App\Application\Actions\puntoVenta\puntoVentaController;
 use App\Application\Actions\Evento\eventoController;
+use App\Application\Actions\Nota\notaController;
 use App\Application\Actions\Pedido\pedidoController;
 use App\Application\Actions\Venta\ventaController;
 
@@ -244,15 +245,15 @@ return function (App $app) {
     // Grupo para manzanas
     $app->group('/Nota', function (Group $group) {
         //ruta para ingresar una nota
-        $group->post('/crear', manzanaController::class . ':validarCrearNota');
+        $group->post('/crear', notaController::class . ':validarCrearNota');
         //ruta para aceptar una nota
-        $group->post('/aceptar', manzanaController::class . ':validarAceptarNota');
+        $group->post('/aceptar', notaController::class . ':validarAceptarNota');
         //ruta para rechazar una nota
-        $group->post('/rechazar', manzanaController::class . ':validarRechazarNota');
+        $group->post('/rechazar', notaController::class . ':validarRechazarNota');
         //ruta para listar todas las notas
-        $group->post('/listaNotas', manzanaController::class . ':validarListaNotas');
+        $group->post('/listaNotas', notaController::class . ':validarListaNotas');
         //ruta para listar los tipos de notas para el combo box de las notas
-        $group->post('/listaTipoNotasSencilla', manzanaController::class . ':validarListaTipoNotaSencilla');
+        $group->post('/listaTipoNotasSencilla', notaController::class . ':validarListaTipoNotaSencilla');
     });
 
     //Grupo para Pedidos
