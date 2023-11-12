@@ -44,47 +44,52 @@ class notaFunctions
 
 
     public function aceptarNota(int $nota)
-{
-    // Obtener información de la nota, incluyendo el idTipo
-    $sql = "SELECT n.cantidad, t.nombre AS tipoNota, n.idManzana FROM nota n
+    {
+        // Obtener información de la nota, incluyendo el idTipo
+        $sql = "SELECT n.cantidad, t.nombre AS tipoNota, n.idManzana as manzana FROM nota n
             INNER JOIN tipo_Nota t ON n.idTipo = t.id
             WHERE n.id = ?";
-    $notaInfo = $this->DB->Ejecutar_Seguro_UTF8($sql, [$nota]);
+        $notaInfo = $this->DB->Buscar_Seguro_UTF8($sql, [$nota]);
 
-    // Comprobar si se encontró la nota
-    if ($notaInfo) {
-        $cantidad = $notaInfo['cantidad'];
-        $tipoNota = $notaInfo['tipoNota'];
-        $idManzana = $notaInfo['idManzana'];
+        $notaInfo = $notaInfo[0];
+        // Comprobar si se encontró la nota
+        if ($notaInfo) {
+            $cantidad = $notaInfo['cantidad'];
+            $tipoNota = $notaInfo['tipoNota'];
+            $idManzana = $notaInfo['manzana'];
 
-        // Comprobar el tipo de nota
-        if ($tipoNota == "aumentar") {
-            // Incrementar el stock de la manzana
-            $sqlUpdate = "UPDATE manzana SET stock = stock + ? WHERE id = ?";
-            $this->DB->Ejecutar_Seguro_UTF8($sqlUpdate, [$cantidad, $idManzana]);
-        } elseif ($tipoNota == "disminuir") {
-            // Comprobar si la cantidad a disminuir no es mayor que el stock actual
-            $sqlStock = "SELECT stock FROM manzana WHERE id = ?";
-            $manzanaInfo = $this->DB->Ejecutar_Seguro_UTF8($sqlStock, [$idManzana]);
-
-            if ($manzanaInfo && $manzanaInfo['stock'] >= $cantidad) {
-                // Disminuir el stock de la manzana
-                $sqlUpdate = "UPDATE manzana SET stock = stock - ? WHERE id = ?";
+            // Comprobar el tipo de nota
+            if ($tipoNota == "aumentar") {
+                // Incrementar el stock de la manzana
+                $sqlUpdate = "UPDATE manzana SET stock = stock + ? WHERE id = ?";
                 $this->DB->Ejecutar_Seguro_UTF8($sqlUpdate, [$cantidad, $idManzana]);
-            } else {
-                return "La cantidad a disminuir es mayor que el stock actual de la manzana.";
+                // Eliminar la nota después de procesarla
+                $sqlDelete = "DELETE FROM nota WHERE id = ?";
+                $statement = $this->DB->Ejecutar_Seguro_UTF8($sqlDelete, [$nota]);
+                return ($statement == '200') ? true : false;
+            } elseif ($tipoNota == "disminuir") {
+                // Comprobar si la cantidad a disminuir no es mayor que el stock actual
+                $sqlStock = "SELECT stock FROM manzana WHERE id = ?";
+                $manzanaInfo = $this->DB->Buscar_Seguro_UTF8($sqlStock, [$idManzana]);
+
+                if ($manzanaInfo && $manzanaInfo['stock'] >= $cantidad) {
+                    // Disminuir el stock de la manzana
+                    $sqlUpdate = "UPDATE manzana SET stock = stock - ? WHERE id = ?";
+                    $this->DB->Ejecutar_Seguro_UTF8($sqlUpdate, [$cantidad, $idManzana]);
+                    // Eliminar la nota después de procesarla
+                    $sqlDelete = "DELETE FROM nota WHERE id = ?";
+                    $statement = $this->DB->Ejecutar_Seguro_UTF8($sqlDelete, [$nota]);
+                    return ($statement == '200') ? true : false;
+                } else {
+                    return "La cantidad a disminuir es mayor que el stock actual de la manzana.";
+                }
             }
+
+            return "Error inesperado, lo sentimos.";
+        } else {
+            return "Nota no encontrada.";
         }
-
-        // Eliminar la nota después de procesarla
-        $sqlDelete = "DELETE FROM nota WHERE id = ?";
-        $statement= $this->DB->Ejecutar_Seguro_UTF8($sqlDelete, [$nota]);
-
-        return ($statement == '200') ? true : false;
-    } else {
-        return "Nota no encontrada.";
     }
-}
 
 
 
@@ -130,7 +135,4 @@ class notaFunctions
             return ['message' => "Error al mostrar las manzanas"];
         }
     }
-
-
-
 }
