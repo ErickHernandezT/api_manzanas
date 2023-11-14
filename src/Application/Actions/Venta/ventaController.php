@@ -28,12 +28,12 @@ class ventaController extends generalController
 
         $mensaje = $this->funciones->listaVentas($fechaInicial, $fechaFinal);
 
-        if ($mensaje) {
-            $code = 200;
-        } else {
+        // if ($mensaje) {
+        //     $code = 200;
+        // } else {
             $code = 404;
-            $mensaje = ['message' => 'Error al cargar las ventas'];
-        }
+        //     $mensaje = ['message' => 'Error al cargar las ventas'];
+        // }
    
 
     // Retornamos la respuesta
