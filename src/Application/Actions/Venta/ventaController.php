@@ -23,17 +23,15 @@ class ventaController extends generalController
 {
     $params = (array)$request->getParsedBody();
 
-        $fechaInicial = (isset($params['fechaInicial'])) ? strip_tags($params['fechaInicial']) : '';
-        $fechaFinal = (isset($params['fechaFinal'])) ? strip_tags($params['fechaFinal']) : '';
 
-        $mensaje = $this->funciones->listaVentas($fechaInicial, $fechaFinal);
+        $mensaje = $this->funciones->listaVentas();
 
-        // if ($mensaje) {
-        //     $code = 200;
-        // } else {
+        if ($mensaje) {
+            $code = 200;
+        } else {
             $code = 404;
-        //     $mensaje = ['message' => 'Error al cargar las ventas'];
-        // }
+            $mensaje = ['message' => 'Error al cargar las ventas'];
+        }
    
 
     // Retornamos la respuesta
