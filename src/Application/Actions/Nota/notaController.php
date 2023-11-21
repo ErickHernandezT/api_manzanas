@@ -108,7 +108,6 @@ class notaController extends generalController
     public function validarListaNotas($request, $response, $args)
     {
 
-
         $mensaje = $this->funciones->listaNotas();
 
         if ($mensaje) {
@@ -117,7 +116,6 @@ class notaController extends generalController
             $code = 404;
             $mensaje = ['message' => 'Actividades no encontradas'];
         }
-
 
         // Retornamos la respuesta
         return $this->response($code, $mensaje, $response);

@@ -124,7 +124,8 @@ class loginController extends generalController
 
         $contraseniaEncriptada = md5($contrasenia);
 
-        if ($telefono != '' && $correo != '' && $apellidoMat != '' && $apellidoPat != '' && $nombre != '' && $usuario != '' && $correo != '' && $contraseniaEncriptada != '') {
+        if ($telefono != '' && $correo != '' && $apellidoMat != '' && $apellidoPat != '' && $nombre != '' && $usuario != '' && $correo != '' 
+        && $contraseniaEncriptada != '') {
 
             $respuesta = $this->funciones->crearProductor($nombre, $apellidoPat, $apellidoMat, $correo, $telefono, $usuario, $contraseniaEncriptada);
 

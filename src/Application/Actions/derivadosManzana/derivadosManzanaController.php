@@ -50,8 +50,6 @@ class derivadosManzanaController extends generalController
 
     public function validarListaDerivadosManzana($request, $response, $args)
     {
-
-
         $mensaje = $this->funciones->listaDerivadosManzana();
 
         if ($mensaje) {
@@ -60,7 +58,6 @@ class derivadosManzanaController extends generalController
             $code = 404;
             $mensaje = ['message' => 'Productos derivados de manzana no encontrados'];
         }
-
 
         // Retornamos la respuesta
         return $this->response($code, $mensaje, $response);

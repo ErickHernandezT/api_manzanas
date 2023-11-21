@@ -61,7 +61,6 @@ class manzanaController extends generalController
     public function validarListaManzanas($request, $response, $args)
     {
         
-
             $mensaje = $this->funciones->listaManzanas();
 
             if ($mensaje) {
@@ -71,7 +70,6 @@ class manzanaController extends generalController
                 $mensaje = ['message' => 'Error al cargar manzanas'];
             }
        
-
         // Retornamos la respuesta
         return $this->response($code, $mensaje, $response);
     }

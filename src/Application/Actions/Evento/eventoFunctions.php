@@ -24,7 +24,7 @@ class eventoFunctions
 
     public function ingresarEvento(String $nombre, String $foto, String $fechaInicio, String $fechaFin, String $latitud, String $longitud, String $descripcion)
     {
-        // Se usa left join para que también muestre los productos que no tengan
+        
         $sql2 = "INSERT INTO evento (nombre, foto, fechaInicio, fechaFin, latitud, longitud, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $foto, $fechaInicio, $fechaFin, $latitud, $longitud, $descripcion]);
@@ -35,7 +35,7 @@ class eventoFunctions
 
     public function actualizarEvento(int $id, String $nombre, String $foto, String $fechaInicio, String $fechaFin, String $latitud, String $longitud, String $descripcion)
     {
-        // Query SQL para actualizar los datos en la tabla manzana
+        // Query SQL para actualizar los datos en la tabla evento
         $sql = "UPDATE evento SET nombre = ?, foto = ?, fechaInicio = ?, fechaFin = ?, latitud = ?, longitud = ?, descripcion = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
@@ -52,7 +52,7 @@ class eventoFunctions
 
     public function eliminarEvento(int $id)
     {
-        // Query SQL para eliminar una entrada de la tabla manzana por ID
+        // Query SQL para eliminar una entrada de la tabla evento por ID
         $sql = "DELETE FROM evento WHERE id = ?";
 
         // Ejecutamos la consulta
@@ -81,7 +81,7 @@ class eventoFunctions
 
     public function buscarEventoPorId(int $id)
     {
-        // Query SQL para buscar una manzana por su ID
+        // Query SQL para buscar un evento por su ID
         $sql = "SELECT id, nombre, foto, fechaInicio, fechaFin, latitud, longitud, descripcion FROM evento WHERE id = ?";
     
         // Ejecutamos la consulta

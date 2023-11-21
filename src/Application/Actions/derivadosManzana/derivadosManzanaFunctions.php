@@ -35,7 +35,7 @@ class derivadosManzanaFunctions
 
     public function actualizarDerivadoManzana(int $id, String $nombre, String $foto, String $descripcion)
     {
-        // Query SQL para actualizar los datos en la tabla manzana
+        // Query SQL para actualizar los datos en la tabla Derivadomanzana
         $sql = "UPDATE derivado_Manzana SET nombre = ?, foto = ?, descripcion = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
@@ -64,7 +64,6 @@ class derivadosManzanaFunctions
 
     public function listaDerivadosManzana()
     {
-        // Selecciona la columna 'foto' en la consulta SQL
         $sql = "SELECT id, nombre, foto, descripcion FROM derivado_Manzana";
     
         $statement = $this->DB->Buscar($sql, []);
@@ -80,7 +79,7 @@ class derivadosManzanaFunctions
 
     public function buscarDerivadoManzanaPorId(int $id)
     {
-        // Query SQL para buscar una manzana por su ID
+        // Query SQL para buscar un derivado manzana por su ID
         $sql = "SELECT id, nombre, foto, descripcion FROM derivado_Manzana WHERE id = ?";
     
         // Ejecutamos la consulta

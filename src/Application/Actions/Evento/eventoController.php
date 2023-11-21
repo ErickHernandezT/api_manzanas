@@ -56,8 +56,6 @@ class eventoController extends generalController
 
     public function validarListaEventos($request, $response, $args)
     {
-        
-
             $mensaje = $this->funciones->listaEventos();
 
             if ($mensaje) {
@@ -67,7 +65,6 @@ class eventoController extends generalController
                 $mensaje = ['message' => 'Eventos no encontrados'];
             }
        
-
         // Retornamos la respuesta
         return $this->response($code, $mensaje, $response);
     }

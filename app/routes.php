@@ -50,7 +50,7 @@ return function (App $app) {
     $app->add(new Tuupola\Middleware\JwtAuthentication([
         // Rutas que requieren el token
         "path" => [
-            "/Actividad", '/Carrito', '/DerivadosManzana', '/Eventos', '/Manzana', '/PuntoVenta'
+            "/Admin", "/Actividad", '/Carrito', '/DerivadosManzana', '/Eventos', '/Manzana', '/Nota', 'Pedidos', 'Ventas', '/PuntoVenta'
         ],
         // "Rutas que no requieren el token"
         "secret" => 'a84125e55c207450dba07c6cb3e7b999',
@@ -89,12 +89,13 @@ return function (App $app) {
     });
 
 
-    //ruta para loguearse
+    //rutas para loguearse
     $app->post('/login', loginController::class . ':validarLogin');
-    // //ruta para registrarun usuario
-    // $app->post('/registrarUsuario', loginController::class . ':validarCrearUsario');
-    //ruta para registrarun productor
-    $app->post('/registrarProductor', loginController::class . ':validarCrearProductor');
+    
+    $app->group('/Admin', function (Group $group) {
+        $group->post('/registrarProductor', loginController::class . ':validarCrearProductor');         
+    });
+    
 
 
 

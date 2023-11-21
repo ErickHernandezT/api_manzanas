@@ -25,7 +25,6 @@ class puntoVentaFunctions
 
     public function ingresarPuntoVenta(String $nombre, String $foto, String $latitud, String $longitud, int $estatus, String $horario)
     {
-        // Se usa left join para que también muestre los productos que no tengan
         $sql2 = "INSERT INTO punto_venta (nombre, foto, latitud, longitud, estatus, horario) VALUES (?, ?, ?, ?, ?, ?)";
 
         $statement = $this->DB->Ejecutar_Seguro_UTF8($sql2, [$nombre, $foto, $latitud, $longitud, $estatus, $horario]);
@@ -34,9 +33,10 @@ class puntoVentaFunctions
 
 
 
-    public function actualizarPuntoVenta(int $id, String $nombre, String $foto, String $latitud, String $longitud, int $estatus, String $horario)
+    public function actualizarPuntoVenta(int $id, String $nombre, String $foto, String $latitud, 
+    String $longitud, int $estatus, String $horario)
     {
-        // Query SQL para actualizar los datos en la tabla manzana
+        // Query SQL para actualizar los datos en la punto venta
         $sql = "UPDATE punto_venta SET nombre = ?, foto = ?, latitud = ?, longitud = ?, estatus = ?, horario = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
@@ -53,7 +53,7 @@ class puntoVentaFunctions
 
     public function eliminarPuntoVenta(int $id)
     {
-        // Query SQL para eliminar una entrada de la tabla manzana por ID
+        // Query SQL para eliminar una entrada de la tabla punto venta por ID
         $sql = "DELETE FROM punto_venta WHERE id = ?";
 
         // Ejecutamos la consulta
@@ -82,7 +82,7 @@ class puntoVentaFunctions
 
     public function buscarPuntoVentaPorId(int $id)
     {
-        // Query SQL para buscar una manzana por su ID
+        // Query SQL para buscar un punto de venta por su ID
         $sql = "SELECT id, nombre, foto, latitud, longitud, estatus, horario FROM punto_venta WHERE id = ?";
     
         // Ejecutamos la consulta

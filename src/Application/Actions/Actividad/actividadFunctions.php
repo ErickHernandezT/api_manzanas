@@ -35,7 +35,7 @@ class actividadFunctions
 
     public function actualizarActividad(int $id, String $nombre, String $foto, String $descripcion)
     {
-        // Query SQL para actualizar los datos en la tabla manzana
+        // Query SQL para actualizar los datos en la tabla actividad
         $sql = "UPDATE actividad SET nombre = ?, foto = ?, descripcion = ? WHERE id = ?";
 
         // Agregamos el ID como último valor en el array de parámetros
@@ -52,7 +52,7 @@ class actividadFunctions
 
     public function eliminarActividad(int $id)
     {
-        // Query SQL para eliminar una entrada de la tabla manzana por ID
+        // Query SQL para eliminar una entrada de la tabla actividad por ID
         $sql = "DELETE FROM actividad WHERE id = ?";
 
         // Ejecutamos la consulta
@@ -66,7 +66,7 @@ class actividadFunctions
 
     public function listaActividades()
     {
-        // Selecciona la columna 'foto' en la consulta SQL
+        // consulta sql
         $sql = "SELECT id, nombre, foto, descripcion FROM actividad";
     
         $statement = $this->DB->Buscar($sql, []);
@@ -82,7 +82,7 @@ class actividadFunctions
 
     public function buscarActividadPorId(int $id)
     {
-        // Query SQL para buscar una manzana por su ID
+        // Query SQL para buscar una actividad por su ID
         $sql = "SELECT id, nombre, foto, descripcion FROM actividad WHERE id = ?";
     
         // Ejecutamos la consulta
