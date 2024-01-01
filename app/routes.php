@@ -18,6 +18,7 @@ use App\Application\Actions\Evento\eventoController;
 use App\Application\Actions\Nota\notaController;
 use App\Application\Actions\Pedido\pedidoController;
 use App\Application\Actions\Venta\ventaController;
+use Tuupola\Middleware\CorsMiddleware;
 
 function CargarImagenBase64($directorio_destino, $nombre, $tmp_name)
 {
@@ -68,19 +69,19 @@ return function (App $app) {
         }
     ]));
 
+    
 
-    $app->options('/{routes:.*}', function (Request $request, Response $response) {
-        // CORS Pre-Flight OPTIONS Request Handler
+    $app->options('/{routes:.+}', function (Request $request, Response $response, $args) {
         return $response;
     });
-
+    
     $app->add(function ($request, $handler) {
         $response = $handler->handle($request);
         return $response
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Credentials', 'true');
+                ->withHeader('Access-Control-Allow-Origin', '*')
+                ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+                ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+                ->withHeader('Access-Control-Allow-Credentials', 'true');
     });
 
     $app->get('/', function (Request $request, Response $response) {
@@ -191,17 +192,7 @@ return function (App $app) {
 
 
 
-    //Grupo para Carrito
-    $app->group('/Carrito', function (Group $group) {
-        //ruta para agregar productos al carrito
-        $group->post('/agregarCarrito', carritoController::class . ':validarAgregarCarrito');
-        //ruta para mostrar el carrito
-        $group->post('/mostrarCarrito', carritoController::class . ':validarMostrarCarrito');
-        //ruta para eliminar todo el carrito
-        $group->post('/eliminarCarrito', carritoController::class . ':validarEliminarCarrito');
-        //ruta para modificar cantidades de carrito
-        $group->post('/modificarCarrito', carritoController::class . ':validarModificarCarrito');
-    });
+    
 
 
     //Grupo para productos derivados manzana
@@ -295,12 +286,18 @@ return function (App $app) {
 
 
     
-
-
-    $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+    $app->map(['GET', 'POST'], '/{routes:.+}', function($req, $res) {
         $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
         return $handler($req, $res);
     });
+
+
+    // $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function($req, $res) {
+    //     $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
+    //     return $handler($req, $res);
+    // });
+
+
 
 
 };

@@ -46,17 +46,17 @@ class loginController extends generalController
 
             if ($mensaje) {
                 // En este caso, existe el usuario por lo que se genera el token
-                // FALTA VALIDAR SI TE HA DADO UN USUARIO VÁLIDO (HECHO)
+                
                 $key = 'a84125e55c207450dba07c6cb3e7b999';
                 $payload = [
                     'usuario' => $usuario,
-                    'exp' => time() + 7 * 24 * 60 * 60 // Una semana en segundos
+                    'exp' => time() + 24 * 60 * 60 // 24 horas en segundos
                 ];
                 $token = JWT::encode($payload, $key);
-
+            
                 // Agrega el token al mensaje de respuesta
                 $mensaje['token'] = $token;
-            }else{
+            } else {
                 $mensaje = ['message' => 'Usuario o contraseña incorrecta'];
             }
         } else {
