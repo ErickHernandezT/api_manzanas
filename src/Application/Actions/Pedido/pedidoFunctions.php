@@ -87,7 +87,7 @@ class pedidoFunctions
         FROM pedido AS p
         LEFT JOIN pedido_manzana AS pm ON p.id = pm.idPedido
         LEFT JOIN manzana AS m ON pm.idManzana = m.id
-        ORDER BY p.fechaOrdenado";
+        ORDER BY p.fechaOrdenado DESC";
 
             $result = $this->DB->Buscar($sql, []);
 

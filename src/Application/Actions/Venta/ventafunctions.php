@@ -34,7 +34,7 @@ public function listaVentas(){
             FROM venta AS v
             LEFT JOIN venta_manzana AS vm ON v.id = vm.idVenta
             LEFT JOIN manzana AS m ON vm.idManzana = m.id
-            ORDER BY v.fechaLiberado";
+            ORDER BY v.fechaLiberado DESC";
 
         $result = $this->DB->Buscar($sql, []);
 

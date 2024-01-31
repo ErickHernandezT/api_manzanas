@@ -9,5 +9,9 @@ class config{
     const USERNAME = 'root';
     const PASSWORD = '1020';
     const DATABASE = 'cpmt_inventario';
+    // const SERVERNAME = 'localhost';
+    // const USERNAME = 'id21551630_root';
+    // const PASSWORD = '+Criomante125';
+    // const DATABASE = 'id21551630_cpmt_manzanas';
 }
 ?>

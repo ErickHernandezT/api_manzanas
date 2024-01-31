@@ -92,7 +92,7 @@ return function (App $app) {
 
     //rutas para loguearse
     $app->post('/login', loginController::class . ':validarLogin');
-    $app->post('/crearAdmin', loginController::class . ':validarCrearAdmin');
+    // $app->post('/crearAdmin', loginController::class . ':validarCrearAdmin');
     
     $app->group('/Admin', function (Group $group) {
         $group->post('/registrarProductor', loginController::class . ':validarCrearProductor');         
